@@ -1,21 +1,37 @@
-@import './base.css';
+/* @import './base.css'; */
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+body {
+  margin: 0;
 }
 
-a,
+#app {
+  display: flex;
+  flex-direction: column; /* 垂直排列 header, main, footer */
+  min-height: 100vh;      /* 讓 footer 貼底 */
+}
+
+main {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: center;
+}
+
+.content {
+  max-width: 1280px;
+  border: 1px solid red;
+}
+
+/* a,
 .green {
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
-}
+} */
 
-@media (hover: hover) {
+/* @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
@@ -32,4 +48,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

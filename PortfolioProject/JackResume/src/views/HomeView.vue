@@ -1,0 +1,149 @@
+<script setup lang="ts">
+import PAC  from '../components/Photos_and_Contact.vue'
+// import { useTheme } from '../components/useTheme'
+// import { useRouter } from 'vue-router'
+// import { Motion } from 'motion-v'
+
+// const router = useRouter()
+
+// const { isDark, toggleTheme } = useTheme()
+
+// function goAbout() {
+//   router.push('/About')
+// }
+
+
+// const hoverAnimation = {
+//   scale: 1.1,
+//   transition: {
+//     duration: 0.3,
+//     ease: 'easeOut',
+//   },
+// } as const
+</script>
+
+<template>
+  <div class="container">
+
+    <div class="item">
+      <PAC />
+      <!-- Photos and Contact Information -->
+    </div>
+
+    <div class="item">
+      ABE
+      <!--About Me -->
+    </div>
+
+    <div class="item">
+      EWE
+      <!-- Education Work Experience -->
+    </div>
+
+  </div>
+</template>
+
+<style scoped>
+.container {
+  width: 1000px;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: start;
+  align-content: start;
+  border: 1px solid red;
+  box-sizing: border-box;
+}
+
+.item {
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.item:nth-child(1) {
+  flex-grow: 1;
+  width: 70%;
+  align-self: flex-start;
+  order: 1;
+}
+
+.item:nth-child(2) {
+  flex-grow: 1;
+  width: 70%;
+  align-self: flex-start;
+  order: 1;
+}
+
+.item:nth-child(3) {
+  width: 100%;
+  order: 2;
+  align-self: flex-start;
+}
+
+/* --------------------------------- */
+
+h1,
+h2,
+button,
+label,
+p {
+  caret-color: transparent;
+}
+
+/* --------------------------------- */
+
+.switch {
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+
+.slider::before {
+  position: absolute;
+  content: '';
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* --------------------------------- */
+
+.motion-btn {
+  display: inline-block; /* 不要當行內文字一起排 */
+  transform-origin: center; /* 放大時以中間為基準 */
+}
+</style>
