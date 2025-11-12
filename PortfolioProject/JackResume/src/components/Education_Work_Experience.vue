@@ -1,0 +1,178 @@
+<template>
+  <div class="resume-block">
+    <h2 class="work-section-title">Work Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date-inline">2021-10 - Ongoing</div>
+          <div class="job-header">
+            <h3 class="job-title">Senior Product Designer</h3>
+            <p class="job-company">TechCorp Inc.</p>
+          </div>
+          <ul class="job-responsibilities">
+            <li class="exp-item">
+              <span>Lead design initiatives for flagship SaaS platform serving 100K+ users</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date-inline">2018-09 - 2021-10</div>
+          <div class="job-header">
+            <h3 class="job-title">Product Designer</h3>
+            <p class="job-company">DesignStudio</p>
+          </div>
+          <ul class="job-responsibilities">
+            <li class="exp-item">
+              <span
+                >Designed mobile and web applications for various clients across industries</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date-inline">2016-06 - 2018-09</div>
+          <div class="job-header">
+            <h3 class="job-title">Junior UX Designer</h3>
+            <p class="job-company">StartupXYZ</p>
+          </div>
+          <ul class="job-responsibilities">
+            <li class="exp-item">
+              <span>Assisted in redesigning company website resulting in 60% increase inengagement</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+.work-section-title {
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.timeline {
+  position: relative;
+  width: 100%;
+  padding: 0; /* no left padding – center line now uses 50% */
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  background: #1f2937;
+}
+
+.timeline-item {
+  position: relative;
+  width: 100%;
+  margin: 3rem 0;
+  /* make sure children can sit on left or right sides */
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Marker is always centered on the vertical line */
+.timeline-marker {
+  position: absolute;
+  left: 50%;
+  top: 0; /* align with the start of the block */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  z-index: 2;
+}
+
+.timeline-dot {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.timeline-dot::after {
+  content: '';
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: white;
+}
+
+.timeline-date-inline {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+/* The content panel takes half of the width minus some spacing from the center line */
+.timeline-content {
+  width: calc(50% - 3.5rem); /* 3.5rem ≈ dot radius + breathing space */
+}
+
+/* Odd items go on the left */
+.timeline-item:nth-child(odd) .timeline-content {
+  margin-right: auto;
+  text-align: right; /* optional: right-align text to mirror the side */
+}
+
+/* Even items go on the right */
+.timeline-item:nth-child(even) .timeline-content {
+  margin-left: auto;
+  text-align: left;
+}
+
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.job-header {
+  margin-bottom: 0.75rem;
+}
+
+.job-title {
+  color: #111827;
+}
+
+.job-company {
+  color: #4b5563;
+}
+
+.job-responsibilities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #374151;
+}
+</style>

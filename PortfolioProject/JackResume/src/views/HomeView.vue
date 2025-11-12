@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PAC  from '../components/Photos_and_Contact.vue'
+import ABE from '../components/About_Me.vue'
+import EWE from '../components/Education_Work_Experience.vue'
 // import { useTheme } from '../components/useTheme'
 // import { useRouter } from 'vue-router'
 // import { Motion } from 'motion-v'
@@ -31,12 +33,12 @@ import PAC  from '../components/Photos_and_Contact.vue'
     </div>
 
     <div class="item">
-      ABE
+      <ABE />
       <!--About Me -->
     </div>
 
     <div class="item">
-      EWE
+      <EWE />
       <!-- Education Work Experience -->
     </div>
 
@@ -52,12 +54,11 @@ import PAC  from '../components/Photos_and_Contact.vue'
   flex-direction: row;
   align-items: start;
   align-content: start;
-  border: 1px solid red;
   box-sizing: border-box;
 }
 
 .item {
-  border: 1px solid black;
+
   box-sizing: border-box;
 }
 
