@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div class="timeline-item">
+      <!-- <div class="timeline-item">
         <div class="timeline-marker">
           <div class="timeline-dot"></div>
         </div>
@@ -52,11 +52,14 @@
           </div>
           <ul class="job-responsibilities">
             <li class="exp-item">
-              <span>Assisted in redesigning company website resulting in 60% increase inengagement</span>
+              <span
+                >Assisted in redesigning company website resulting in 60% increase
+                inengagement</span
+              >
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -68,6 +71,8 @@
 }
 
 .timeline {
+  margin: 0 auto;
+  max-width: 800px;
   position: relative;
   width: 100%;
   padding: 0; /* no left padding – center line now uses 50% */
@@ -131,7 +136,7 @@
 .timeline-date-inline {
   font-size: 0.875rem;
   color: #6b7280;
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
 
 /* The content panel takes half of the width minus some spacing from the center line */
@@ -139,16 +144,28 @@
   width: calc(50% - 3.5rem); /* 3.5rem ≈ dot radius + breathing space */
 }
 
-/* Odd items go on the left */
+/* Odd(奇數) items go on the left */
 .timeline-item:nth-child(odd) .timeline-content {
   margin-right: auto;
   text-align: right; /* optional: right-align text to mirror the side */
 }
 
-/* Even items go on the right */
+/* Even(偶數) items go on the right */
 .timeline-item:nth-child(even) .timeline-content {
   margin-left: auto;
   text-align: left;
+}
+
+/* only for right(Even) job-responsibilities settings */
+.timeline-item:nth-child(even) .job-responsibilities {
+  list-style-position: inside; /* dots are closer the text */
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.timeline-item:nth-child(even) .job-responsibilities li {
+  text-indent: -5px; /* 讓文字更靠近圓點 */
+  padding-left: 0.5rem; /* 微量間距避免重疊 */
 }
 
 .experience-list {
@@ -163,16 +180,19 @@
 
 .job-title {
   color: #111827;
+  margin: 5px 0;
 }
 
 .job-company {
   color: #4b5563;
+  margin: 5px 0;
 }
 
 .job-responsibilities {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
+  margin: 10px 0;
   color: #374151;
 }
 </style>
