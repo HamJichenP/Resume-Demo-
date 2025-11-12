@@ -1,24 +1,8 @@
 <template>
-  <div class="resume-block">
+  <div class="resume-block work-experience">
     <h2 class="work-section-title">Work Experience</h2>
+
     <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-marker">
-          <div class="timeline-dot"></div>
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-date-inline">2021-10 - Ongoing</div>
-          <div class="job-header">
-            <h3 class="job-title">Senior Product Designer</h3>
-            <p class="job-company">TechCorp Inc.</p>
-          </div>
-          <ul class="job-responsibilities">
-            <li class="exp-item">
-              <span>Lead design initiatives for flagship SaaS platform serving 100K+ users</span>
-            </li>
-          </ul>
-        </div>
-      </div>
 
       <div class="timeline-item">
         <div class="timeline-marker">
@@ -40,34 +24,39 @@
         </div>
       </div>
 
-      <!-- <div class="timeline-item">
+      <div class="timeline-item">
         <div class="timeline-marker">
           <div class="timeline-dot"></div>
         </div>
         <div class="timeline-content">
-          <div class="timeline-date-inline">2016-06 - 2018-09</div>
+          <div class="timeline-date-inline">2021-10 - Ongoing</div>
           <div class="job-header">
-            <h3 class="job-title">Junior UX Designer</h3>
-            <p class="job-company">StartupXYZ</p>
+            <h3 class="job-title">Senior Product Designer</h3>
+            <p class="job-company">TechCorp Inc.</p>
           </div>
           <ul class="job-responsibilities">
             <li class="exp-item">
-              <span
-                >Assisted in redesigning company website resulting in 60% increase
-                inengagement</span
-              >
+              <span>Lead design initiatives for flagship SaaS platform serving 100K+ users</span>
             </li>
           </ul>
         </div>
-      </div> -->
+      </div>
+      
     </div>
   </div>
 </template>
 
 <style>
+.resume-block.work-experience {
+  background: linear-gradient(to right, #FFF9F0, #FFEFD5);
+  border: 2px solid #FDBA74;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25);
+}
+
 .work-section-title {
-  color: #111827;
-  margin-bottom: 1.5rem;
+  color: #EA580C;
 }
 
 .timeline {
@@ -84,15 +73,15 @@
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: 10px;
   transform: translateX(-50%);
-  background: #1f2937;
+  background: #F59E0B;
 }
 
 .timeline-item {
   position: relative;
   width: 100%;
-  margin: 3rem 0;
+  margin: 10px 0;
   /* make sure children can sit on left or right sides */
 }
 
@@ -118,7 +107,8 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: #1f2937;
+  background: #FB923C;
+  box-shadow: 0 0 0 3px #F59E0B;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,7 +120,7 @@
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  background: white;
+  background: #FFFFFF;
 }
 
 .timeline-date-inline {
@@ -174,17 +164,17 @@
   gap: 1.5rem;
 }
 
-.job-header {
+/* .job-header {
   margin-bottom: 0.75rem;
-}
+} */
 
 .job-title {
-  color: #111827;
+  color: #EA580C;
   margin: 5px 0;
 }
 
 .job-company {
-  color: #4b5563;
+  color: #F97316;
   margin: 5px 0;
 }
 
@@ -193,6 +183,6 @@
   flex-direction: column;
   gap: 0.25rem;
   margin: 10px 0;
-  color: #374151;
+  color: #3F3F46;
 }
 </style>

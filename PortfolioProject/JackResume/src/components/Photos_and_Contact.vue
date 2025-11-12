@@ -38,7 +38,7 @@
 
 <style>
 .resume-block {
-  background-color: white;
+  background-color: #FFF6E8;
   border-radius: 0.5rem;
   box-shadow:
     0 1px 3px 0 rgba(0, 0, 0, 0.1),
@@ -65,7 +65,7 @@
   height: 15rem;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #e5e7eb;
+  border: 4px solid #FDE68A;
 }
 
 .contact-info {
@@ -81,7 +81,7 @@
 }
 
 .contact-name {
-  color: #111827;
+  color: #F97316;
   margin: 0;
   font-size: 3rem;
   line-height: 1.2;
@@ -89,7 +89,7 @@
 
 .contact-title {
   margin: 0;
-  color: #4b5563;
+  color: #FB7185;
   font-size: 40px;
 }
 
@@ -110,7 +110,7 @@
 .contact-icon {
   width: 1.25rem;
   height: 1.25rem;
-  color: #6b7280;
+  color: #F59E0B;
   flex-shrink: 0;
 }
 </style>
