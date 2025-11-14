@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PAC  from '../components/Photos_and_Contact.vue'
 import ABE from '../components/About_Me.vue'
-import EWE from '../components/Work_Experience.vue'
+import WEP from '../components/Work_Experience.vue'
 // import { useTheme } from '../components/useTheme'
 // import { useRouter } from 'vue-router'
 // import { Motion } from 'motion-v'
@@ -38,7 +38,7 @@ import EWE from '../components/Work_Experience.vue'
     </div>
 
     <div class="item">
-      <EWE />
+      <WEP />
       <!-- Education Work Experience -->
     </div>
 
