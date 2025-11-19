@@ -1,32 +1,13 @@
 <script setup lang="ts">
-import PAC  from '../components/Photos_and_Contact.vue'
+import PAC from '../components/Photos_and_Contact.vue'
 import ABE from '../components/About_Me.vue'
-import WEP from '../components/Work_Experience.vue'
-// import { useTheme } from '../components/useTheme'
-// import { useRouter } from 'vue-router'
-// import { Motion } from 'motion-v'
+import EWE from '../components/Work_Experience.vue'
+import ELL from '../components/Education_level.vue'
 
-// const router = useRouter()
-
-// const { isDark, toggleTheme } = useTheme()
-
-// function goAbout() {
-//   router.push('/About')
-// }
-
-
-// const hoverAnimation = {
-//   scale: 1.1,
-//   transition: {
-//     duration: 0.3,
-//     ease: 'easeOut',
-//   },
-// } as const
 </script>
 
 <template>
   <div class="container">
-
     <div class="item">
       <PAC />
       <!-- Photos and Contact Information -->
@@ -38,10 +19,14 @@ import WEP from '../components/Work_Experience.vue'
     </div>
 
     <div class="item">
-      <WEP />
-      <!-- Education Work Experience -->
+      <EWE />
+      <!-- Work Experience -->
     </div>
 
+    <div class="item">
+      <ELL />
+      <!-- Education_level -->
+    </div>
   </div>
 </template>
 
@@ -58,27 +43,19 @@ import WEP from '../components/Work_Experience.vue'
 }
 
 .item {
-
   box-sizing: border-box;
 }
 
-.item:nth-child(1) {
-  flex-grow: 1;
-  width: 70%;
-  align-self: flex-start;
-  order: 1;
-}
-
+.item:nth-child(1),
 .item:nth-child(2) {
   flex-grow: 1;
   width: 70%;
   align-self: flex-start;
-  order: 1;
 }
 
-.item:nth-child(3) {
+.item:nth-child(3),
+.item:nth-child(4) {
   width: 100%;
-  order: 2;
   align-self: flex-start;
 }
 

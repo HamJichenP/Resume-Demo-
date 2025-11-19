@@ -61,6 +61,20 @@
   }
 }
 
+/* Education section color variables (no conflicts with existing names) */
+:root {
+  --card-light: #ffffff;
+  --card-dark: #1f1f1f;
+  --heading-light: #111827;
+  --heading-dark: #e5e7eb;
+  --border-light: #e5e7eb;
+  --border-dark: #374151;
+  --primary: #FDBA74;            
+  --primary-rgb: 253, 186, 116;
+  --text-light: #4b5563;
+  --text-dark: #9ca3af;
+}
+
 *,
 *::before,
 *::after {
