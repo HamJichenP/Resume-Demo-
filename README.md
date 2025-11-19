@@ -61,6 +61,4 @@
 - npm / node
 - .NET SDK 8
 
----
 
-## 📁 Project Structure
