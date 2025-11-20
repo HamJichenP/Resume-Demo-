@@ -1,54 +1,83 @@
-/* color palette from <https://github.com/vuejs/theme> */
-:root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+/* ==============================================
+   1. Base Palette (色票庫 - 絕對顏色)
+   這裡定義「顏色本身」，不包含它用在哪裡。
+   ============================================== */
+   :root {
+    /* --- 黑白灰階 --- */
+    --vt-c-white: #ffffff;
+    --vt-c-white-soft: #f8f8f8;
+    --vt-c-white-mute: #f2f2f2;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+    --vt-c-black: #181818;
+    --vt-c-black-soft: #222222;
+    --vt-c-black-mute: #282828;
 
-  --vt-c-indigo: #2c3e50;
+    /* --- 品牌顏色 (Brand Colors) --- */
+    --vt-c-indigo: #2c3e50;
+    --vt-c-orange: #fdba74;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+    /* ✨ Image 2 專屬配色 (淺色模式用) */
+    --brand-orange: #f97316;       /* 名字、Icon 主色 */
+    --brand-pink: #fb7185;         /* 職稱顏色 */
+    --brand-bg-soft: #fff7ed;      /* Icon 背後的小方塊顏色 (極淺橘) */
+    --brand-beige: #fff6e8;        /* 履歷卡片的大背景色 (米色) */
+    --brand-yellow: #ef9b00;       /* 照片邊框顏色 */
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
+    /* --- 分隔線顏色 --- */
+    --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+    --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+    --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+    --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
-/* semantic(語意) color variables(變數) for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+    /* --- 文字基礎色 --- */
+    --vt-c-text-light-1: var(--vt-c-indigo);
+    --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+    --vt-c-text-dark-1: var(--vt-c-white);
+    --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  }
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
-
-:root[data-theme='light'] {
-  --color-background: var(--vt-c-white);
-  --color-text: var(--vt-c-text-light-1);
-}
-
-:root[data-theme='dark'] {
-  --color-background: var(--vt-c-black);
-  --color-text: var(--vt-c-text-dark-1);
-}
-
-/* 使用者設定的黑白切換(如果是要按鈕手動切換還是要root、body) */
-@media (prefers-color-scheme: dark) {
+  /* ==============================================
+     2. Semantic Variables (語意變數 - 預設淺色模式)
+     這裡定義「元件該用什麼顏色」，並連結到上面的色票。
+     ============================================== */
   :root {
+    /* 告訴瀏覽器這是淺色主題 (影響 Scrollbar 等原生元件) */
+    color-scheme: light;
+
+    /* --- 全站基礎背景與邊框 --- */
+    --color-background: var(--vt-c-white);
+    --color-background-soft: var(--vt-c-white-soft);
+    --color-background-mute: var(--vt-c-white-mute);
+    --color-border: var(--vt-c-divider-light-2);
+    --color-border-hover: var(--vt-c-divider-light-1);
+
+    /* --- 全站基礎文字 --- */
+    --color-heading: var(--vt-c-text-light-1);
+    --color-text: var(--vt-c-text-light-1);
+
+    /* --- 版面設定 --- */
+    --section-gap: 160px;
+
+    /* --- ✨ Resume Card 專用變數 (淺色) --- */
+    --resume-card-bg: var(--brand-beige);  /* 卡片背景 */
+    --card-border: #e5e7eb;                /* 卡片邊框 */
+    --photo-border: var(--brand-yellow);   /* 照片外框 */
+
+    /* --- ✨ Icon 與特定文字 (淺色) --- */
+    --icon-box-bg: var(--brand-bg-soft);   /* Icon 方塊底色 */
+    --icon-box-fg: var(--brand-orange);    /* Icon 圖案顏色 */
+    --name-color: var(--brand-orange);     /* 名字顏色 */
+    --title-color: var(--brand-pink);      /* 職稱顏色 */
+  }
+
+  /* ==============================================
+     3. Dark Theme Overrides (深色模式覆寫)
+     當 HTML標籤有 data-theme='dark' 時，覆寫上述變數。
+     ============================================== */
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+
+    /* --- 全站背景變黑 --- */
     --color-background: var(--vt-c-black);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
@@ -58,54 +87,69 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    /* --- ✨ Resume Card 變數覆寫 (深色) --- */
+    --resume-card-bg: #1f1f1f;        /* 卡片變深灰 */
+    --card-border: #374151;
+    --photo-border: #b45309;          /* 照片框變深橘色 */
+
+    /* --- ✨ Icon 與文字覆寫 (深色) --- */
+    /* 背景改為半透明橘色，避免在黑底太刺眼 */
+    --icon-box-bg: rgba(249, 115, 22, 0.15);
+    /* Icon 與名字改為較亮的橘色，增加對比度 */
+    --icon-box-fg: #fdba74;
+    --name-color: #fdba74;
+    --title-color: #f472b6;           /* 職稱改為較亮的粉色 */
   }
-}
 
-/* Education section color variables (no conflicts with existing names) */
-:root {
-  --card-light: #ffffff;
-  --card-dark: #1f1f1f;
-  --heading-light: #111827;
-  --heading-dark: #e5e7eb;
-  --border-light: #e5e7eb;
-  --border-dark: #374151;
-  --primary: #FDBA74;            
-  --primary-rgb: 253, 186, 116;
-  --text-light: #4b5563;
-  --text-dark: #9ca3af;
-}
+  /* ==============================================
+     (Fallback) 系統原生深色模式支援
+     當使用者沒手動切換開關 (無 data-theme 屬性) 時，聽從系統設定。
+     ============================================== */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      color-scheme: dark;
+      --color-background: var(--vt-c-black);
+      --color-background-soft: var(--vt-c-black-soft);
+      --color-background-mute: var(--vt-c-black-mute);
+      --color-border: var(--vt-c-divider-dark-2);
+      --color-border-hover: var(--vt-c-divider-dark-1);
+      --color-heading: var(--vt-c-text-dark-1);
+      --color-text: var(--vt-c-text-dark-2);
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}
+      /* 補齊深色模式變數 */
+      --resume-card-bg: #1f1f1f;
+      --card-border: #374151;
+      --photo-border: #b45309;
 
-body {
-  min-height: 100vh; /* 讓body高度至少與視窗一樣高  */
-  color: var(--color-text); /* 預設全站文字顏色 */
-  background: var(--color-background); /* 預設全站背景色 */
-  transition: /* 顏色變化時有漸變效果（配合主題切換) */
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6; /* 調整文字行距 */
-  font-family:  /* 全站字型設定，會依序使用找到的第一個可用字型 */
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px; /* 全站字體大小 */
-  text-rendering: optimizeLegibility; /* 提升字體顯示品質 */
-  -webkit-font-smoothing: antialiased; /* control style */
-  -moz-osx-font-smoothing: grayscale; /* control style */
-}
+      --icon-box-bg: rgba(249, 115, 22, 0.15);
+      --icon-box-fg: #fdba74;
+      --name-color: #fdba74;
+      --title-color: #f472b6;
+    }
+  }
+
+  /* ==============================================
+     4. Base Styles (基礎樣式)
+     ============================================== */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
+  }
+
+  body {
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-background);
+    /* 讓顏色切換時有 0.3秒 的滑順過渡 */
+    transition: color 0.3s, background-color 0.3s;
+    line-height: 1.6;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
