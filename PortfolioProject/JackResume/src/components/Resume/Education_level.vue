@@ -32,46 +32,32 @@
   </section>
 </template>
 
-<style>
-/* Section wrapper */
-.edu-section {
-  background-color: var(--card-light);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
+<style scoped>
+/* =======================================================
+   1. 區塊容器設定
+   ======================================================= */
 
-@media (min-width: 640px) {
-  .edu-section {
-    padding: 32px;
-  }
-}
-
-/* Dark mode */
-.dark .edu-section {
-  background-color: var(--card-dark);
-}
-
-/* Title */
+/* 標題 */
 .edu-title {
-  font-size: 1.5rem;
+  /* ✨ 標題顏色使用主橘色 */
+  color: var(--name-color);
+  font-size: 2rem; /* 放大標題 */
   font-weight: 700;
-  color: var(--heading-light);
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem; /* 增加間距 */
+  /* 移除底線，讓它更像一個獨立的標題 */
+  /* padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light); */
 }
 
-.dark .edu-title {
-  color: var(--heading-dark);
-  border-color: var(--border-dark);
-}
+/* 移除 .dark .edu-title 的覆寫，使用單一變數控制 */
 
-/* Grid */
+/* =======================================================
+   2. Grid 排版 (保持不變)
+   ======================================================= */
 .edu-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 2rem; /* 增加間距 */
 }
 
 @media (min-width: 768px) {
@@ -80,63 +66,77 @@
   }
 }
 
-/* Item layout */
+/* 項目佈局 (保持不變) */
 .edu-item {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
+  align-items: flex-start; /* 讓 icon 對齊頂部 */
 }
 
-/* Icon area */
+/* =======================================================
+   3. Icon 樣式 (模仿 Contact 區塊)
+   ======================================================= */
 .edu-icon-wrapper {
   flex-shrink: 0;
 }
 
 .edu-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  background-color: rgba(var(--primary-rgb), 0.1);
-  color: var(--primary);
+  /* ✨ 使用 Contact 區塊的樣式設定 */
+  width: 3rem; /* 方塊大小 */
+  height: 3rem;
+  border-radius: 0.75rem; /* 圓角 */
+
+  /* ✨ 使用變數：Icon 背景色 */
+  background-color: var(--icon-box-bg);
+  /* ✨ 使用變數：Icon 本體顏色 (橘色) */
+  color: var(--icon-box-fg);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dark .edu-icon {
-  background-color: rgba(var(--primary-rgb), 0.2);
-}
+/* 移除 .dark .edu-icon 的覆寫 */
 
 /* Icon size */
 .icon-symbol {
-  font-size: 1.875rem !important; /* text-3xl */
+  font-size: 1.5rem !important; /* 調整為 1.5rem */
 }
 
-/* Degree title */
+/* =======================================================
+   4. 文字樣式 (使用變數)
+   ======================================================= */
+
+/* Degree title (學位名稱) */
 .edu-degree {
-  font-size: 1.125rem; /* text-lg */
+  /* ✨ 放大標題，使用一般文字色 */
+  font-size: 1.35rem;
   font-weight: 600;
-  color: var(--heading-light);
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
 }
 
-.dark .edu-degree {
-  color: var(--heading-dark);
-}
+/* 移除 .dark .edu-degree 的覆寫 */
 
-/* School */
+
+/* School (學校名稱) */
 .edu-school {
-  font-size: 1rem;
-  color: var(--primary);
+  /* ✨ 使用粉色作為強調色 (與工作經驗的公司名稱統一) */
+  font-size: 1.15rem;
+  color: var(--title-color);
   font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
-/* Year text */
+/* Year text (年份) */
 .edu-year {
-  font-size: 0.875rem;
-  margin-top: 4px;
-  color: var(--text-light);
+  /* 使用靜音文字顏色 */
+  font-size: 1rem;
+  margin-top: 0;
+  color: var(--color-text-mute);
 }
 
-.dark .edu-year {
-  color: var(--text-dark);
-}
+/* 移除 .dark .edu-year 的覆寫 */
 </style>

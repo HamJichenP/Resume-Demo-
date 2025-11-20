@@ -9,27 +9,26 @@ import ELL from '../components/Resume/Education_level.vue'
   <div class="container">
     <div class="item">
       <PAC />
-      <!-- Photos and Contact Information -->
-    </div>
+      </div>
 
     <div class="item">
       <ABE />
-      <!--About Me -->
-    </div>
+      </div>
 
     <div class="item">
       <WEE />
-      <!-- Work Experience -->
-    </div>
+      </div>
 
     <div class="item">
       <ELL />
-      <!-- Education_level -->
-    </div>
+      </div>
   </div>
 </template>
 
 <style scoped>
+/* ======================================================= */
+/* 1. 基礎排版設定 (保持不變) */
+/* ======================================================= */
 .container {
   width: 1000px;
   display: flex;
@@ -43,6 +42,15 @@ import ELL from '../components/Resume/Education_level.vue'
 
 .item {
   box-sizing: border-box;
+  /* ✨ 讓所有卡片預設都具備基礎的卡片樣式 */
+  background-color: var(--resume-card-bg);
+  border-radius: 0.5rem;
+  padding: 2rem; /* 給予內邊距 */
+  /* 使用 Icon 前景色 (橘色) 的半透明版本作為邊框 */
+  border: 4px solid rgba(249, 115, 22, 0.3);
+
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
 }
 
 .item:nth-child(1),
@@ -58,7 +66,25 @@ import ELL from '../components/Resume/Education_level.vue'
   align-self: flex-start;
 }
 
-/* --------------------------------- */
+/* ======================================================= */
+/* 2. 特殊樣式：About Me (第二個 item) 加上橘色左邊框 */
+/* ======================================================= */
+.item:nth-child(2) {
+  /* 橘色左側邊框：使用 Icon 的前景色變數，確保深色模式也能變亮 */
+  /* 為了實現左側邊框更粗更深，我們覆蓋掉 item 上的 1px 邊框 */
+  border-left: 4px solid var(--icon-box-fg);
+  /* 其他三邊保留原來的 1px 邊框 */
+  border-top: 1px solid rgba(249, 115, 22, 0.3);
+  border-right: 1px solid rgba(249, 115, 22, 0.3);
+  border-bottom: 1px solid rgba(249, 115, 22, 0.3);
+
+  padding: 2rem 2rem 2rem 1.75rem; /* 為了視覺對齊，左側 padding 稍微減小 (2rem - 4px) */
+}
+
+
+/* ======================================================= */
+/* 3. 其他基礎樣式 (保持不變) */
+/* ======================================================= */
 
 h1,
 h2,
@@ -120,7 +146,7 @@ input:checked + .slider::before {
 /* --------------------------------- */
 
 .motion-btn {
-  display: inline-block; /* 不要當行內文字一起排 */
-  transform-origin: center; /* 放大時以中間為基準 */
+  display: inline-block;
+  transform-origin: center;
 }
 </style>

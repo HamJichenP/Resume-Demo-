@@ -49,15 +49,6 @@ import GithubIcon from '@/assets/GithubIcon.vue'
 
 <style scoped>
 .resume-block {
-  /* 使用變數：背景色 (淺色時是米色，深色時是深灰) */
-  background-color: var(--resume-card-bg);
-
-  border-radius: 0.5rem;
-  box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  padding: 2rem;
-
   /* 過渡動畫：讓背景色切換時平滑 */
   transition: background-color 0.3s ease;
 }

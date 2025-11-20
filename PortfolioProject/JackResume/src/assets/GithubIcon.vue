@@ -9,22 +9,3 @@
     </svg>
   </div>
 </template>
-
-<style scoped>
-.icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  background-color: rgba(var(--primary-rgb), 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.github-icon {
-  width: 28px;
-  height: 28px;
-  fill: var(--primary);
-}
-</style>
