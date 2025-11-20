@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import PAC from '../components/Photos_and_Contact.vue'
-import ABE from '../components/About_Me.vue'
-import EWE from '../components/Work_Experience.vue'
-import ELL from '../components/Education_level.vue'
-
+import PAC from '../components/Resume/Photos_and_Contact.vue'
+import ABE from '../components/Resume/About_Me.vue'
+import WEE from '../components/Resume/Work_Experience.vue'
+import ELL from '../components/Resume/Education_level.vue'
 </script>
 
 <template>
@@ -19,7 +18,7 @@ import ELL from '../components/Education_level.vue'
     </div>
 
     <div class="item">
-      <EWE />
+      <WEE />
       <!-- Work Experience -->
     </div>
 

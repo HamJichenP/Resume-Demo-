@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from '../components/useTheme'
+import { useTheme } from '../router/useTheme'
 const { isDark, toggleTheme } = useTheme()
 </script>
 
