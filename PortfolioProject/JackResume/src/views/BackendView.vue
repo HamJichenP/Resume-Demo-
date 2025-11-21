@@ -1,26 +1,11 @@
 <script setup lang="ts">
-import PAC from '../components/Resume/Photos_and_Contact.vue'
-import ABE from '../components/Resume/About_Me.vue'
-import WEE from '../components/Resume/Work_Experience.vue'
-import ELL from '../components/Resume/Education_level.vue'
+import BPAC from "../components/Backend/B_Photos_and_Contact.vue"
 </script>
 
 <template>
   <div class="container">
     <div class="item">
-      <PAC />
-    </div>
-
-    <div class="item">
-      <ABE />
-    </div>
-
-    <div class="item">
-      <WEE />
-    </div>
-
-    <div class="item">
-      <ELL />
+      <BPAC />
     </div>
   </div>
 </template>
