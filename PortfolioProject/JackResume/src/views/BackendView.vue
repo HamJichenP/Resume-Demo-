@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BPAC from "../components/Backend/B_Photos_and_Contact.vue"
 import BABE from "../components/Backend/B_About_Me.vue"
+import BWEE from "../components/Backend/B_Work_Experience.vue"
 </script>
 
 <template>
@@ -10,6 +11,9 @@ import BABE from "../components/Backend/B_About_Me.vue"
     </div>
     <div class="item">
       <BABE />
+    </div>
+    <div class="item">
+      <BWEE />
     </div>
   </div>
 </template>
