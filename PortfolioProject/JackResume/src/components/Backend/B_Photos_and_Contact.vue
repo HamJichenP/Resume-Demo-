@@ -222,7 +222,7 @@ const isNameEditing = ref(false)
 </template>
 
 <style scoped>
-/*管理頁面基礎樣式*/
+/* 基礎樣式與版面 */
 
 .admin-page-title {
   color: var(--name-color);
@@ -236,7 +236,8 @@ const isNameEditing = ref(false)
   margin: 0.5rem 0;
 }
 
-/*姓名與標題編輯區*/
+/* #region 姓名與標題編輯區 */
+
 .name-edit-section {
   display: flex;
   justify-content: space-between;
@@ -263,15 +264,19 @@ const isNameEditing = ref(false)
   gap: 0.5rem;
 }
 
+/*
+ * .input-name, .input-title 的基礎樣式已移至通用輸入框區塊
+ * 這裡只保留其獨有的字體大小
+ */
 .input-name,
 .input-title {
-  padding: 0.5rem;
-  border: 1px solid var(--icon-box-bg);
-  border-radius: 4px;
   font-size: 1.2rem;
 }
 
-/*按鈕基礎樣式*/
+/* #endregion */
+
+/* #region 按鈕基礎樣式 */
+
 .edit-btn,
 .save-btn,
 .delete-btn,
@@ -312,7 +317,10 @@ const isNameEditing = ref(false)
   color: white;
 }
 
-/*聯絡資訊列表管理*/
+/* #endregion */
+
+/* #region 聯絡資訊列表管理 */
+
 .contact-list-admin {
   display: flex;
   flex-direction: column;
@@ -346,7 +354,6 @@ const isNameEditing = ref(false)
 }
 
 .edu-icon-admin {
-  /* 沿用原本的 Icon 樣式 */
   width: 3rem;
   height: 3rem;
   border-radius: 0.5rem;
@@ -373,10 +380,9 @@ const isNameEditing = ref(false)
 .item-value {
   font-size: 1.1rem;
 }
-.input-value {
-  padding: 0.4rem;
-  border: 1px solid var(--name-color);
-  border-radius: 4px;
+
+/* 聯絡項目編輯區的 input-value */
+.contact-item-admin .input-value {
   font-size: 1.1rem;
   min-width: 250px;
 }
@@ -385,8 +391,11 @@ const isNameEditing = ref(false)
   display: flex;
   gap: 0.5rem;
 }
+/* #endregion
 
-/*新增項目表單*/
+/* 新增項目表單 */
+
+/* #region 通用輸入框與互動樣式 (統一風格) */
 .add-contact-form {
   margin-top: 1rem;
   font-size: 1rem;
@@ -394,19 +403,66 @@ const isNameEditing = ref(false)
 
 .form-inputs {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr 1fr; /* 1 (Icon) 2 (Value) 1 (Type) 1 (Button) */
   gap: 1rem;
   align-items: center;
 }
 
+/*
+ * .input-type 和 .input-value 的基礎樣式已移至通用輸入框區塊
+ * 這裡只保留其獨有的字體大小
+ */
 .input-type,
-.input-value,
-.input-icon {
-  padding: 1rem;
-  border: 1px solid var(--icon-box-bg);
-  border-radius: 4px;
+.add-contact-form .input-value {
   font-size: 1rem;
 }
+/* #endregion */
+
+/* #region 涵蓋所有需要統一邊框、背景和圓角的元素*/
+
+.input-name,
+.input-title,
+.input-type,
+.add-contact-form .input-value,
+.contact-item-admin .input-value,
+.selected-icon-display {
+  /* 統一基礎樣式 */
+  background-color: var(--resume-card-bg, white);
+  border: 1px solid var(--icon-box-bg);
+  border-radius: 4px;
+  color: var(--color-text);
+  /* 統一 padding 以確保高度一致 */
+  padding: 0.5rem 0.75rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+/* Hover 互動：滑鼠懸停時邊框變色 */
+.input-name:hover,
+.input-title:hover,
+.input-type:hover,
+.add-contact-form .input-value:hover,
+.contact-item-admin .input-value:hover,
+.selected-icon-display:hover {
+  border-color: var(--name-color);
+}
+
+/* Focus 互動：輸入框被點擊時，邊框變色並有輕微陰影 */
+.input-name:focus,
+.input-title:focus,
+.input-type:focus,
+.add-contact-form .input-value:focus,
+.contact-item-admin .input-value:focus,
+.icon-search-input:focus {
+  border-color: var(--name-color);
+  box-shadow: 0 0 0 1px var(--name-color);
+  outline: none;
+}
+
+/* #endregion */
+
+/* #region Icon 選擇器與下拉列表 */
 
 .icon-select-wrapper {
   position: relative;
@@ -416,22 +472,22 @@ const isNameEditing = ref(false)
 .selected-icon-display {
   display: flex;
   align-items: center;
-  /* padding 設為 0.5rem 配合 input 的高度 */
-  padding: 0.5rem 0.5rem;
-  border: 1px solid var(--icon-box-bg);
-  border-radius: 4px;
   cursor: pointer;
-  background-color: transparent;
-  transition: border-color 0.2s;
-}
-.selected-icon-display:hover {
-  border-color: var(--name-color);
+  /* padding, border, radius 已由通用樣式區塊設定 */
 }
 
-/* #region (Icon) */
+/* Icon 搜尋輸入框 (它在 .selected-icon-display 內部，必須無邊框且透明) */
+.icon-search-input {
+  flex-grow: 1;
+  border: none; /* 移除邊框 */
+  outline: none;
+  background: transparent; /* 背景透明 */
+  padding: 0; /* 移除 padding */
+  color: var(--color-text);
+  font-size: 1rem;
+}
 
 .icon-preview {
-  /* 沿用或簡化 edu-icon 的樣式 */
   width: 2rem;
   height: 2rem;
   border-radius: 4px;
@@ -445,104 +501,6 @@ const isNameEditing = ref(false)
 }
 .icon-preview .icon-symbol {
   font-size: 1.1rem;
-}
-
-.icon-search-input {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 1rem;
-  padding: 0;
-}
-
-.dropdown-arrow {
-  margin-left: auto;
-  color: var(--color-text-mute);
-  font-size: 1.2rem;
-}
-
-/* Icon 下拉列表 */
-.icon-dropdown-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-  margin: 0.25rem 0 0 0;
-  background-color: var(--resume-card-bg);
-  border: 1px solid var(--name-color);
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.icon-dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.icon-dropdown-item:hover {
-  background-color: var(--icon-box-bg);
-}
-
-.icon-name-text {
-  margin-left: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.icon-select-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.selected-icon-display {
-  display: flex;
-  align-items: center;
-  /* padding 設為 0.5rem 配合 input 的高度 */
-  padding: 0.5rem 0.5rem;
-  border: 1px solid var(--icon-box-bg);
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: transparent;
-  transition: border-color 0.2s;
-}
-.selected-icon-display:hover {
-  border-color: var(--name-color);
-}
-
-.icon-preview {
-  /* 沿用或簡化 edu-icon 的樣式 */
-  width: 2rem;
-  height: 2rem;
-  border-radius: 4px;
-  background-color: var(--icon-box-bg);
-  color: var(--icon-box-fg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 0.5rem;
-}
-.icon-preview .icon-symbol {
-  font-size: 1.1rem;
-}
-
-.icon-search-input {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 1rem;
-  padding: 0;
 }
 
 .dropdown-arrow {
