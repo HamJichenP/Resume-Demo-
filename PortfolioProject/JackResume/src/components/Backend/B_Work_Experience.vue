@@ -189,7 +189,8 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
 /* 容器和標題 */
 .admin-block {
   padding: 20px;
-  background-color: var(--color-background-soft);
+  /* 保持管理區塊與父容器一致 */
+  background-color: var(--color-background-mute);
   border-radius: 8px;
   border: 1px solid var(--color-border);
   margin-bottom: 2rem;
@@ -229,7 +230,7 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
 /* 工作卡片樣式 */
 .job-card {
   border: 1px solid var(--card-border);
-  background-color: var(--vt-c-white);
+  background-color: var(--resume-card-bg);
   padding: 20px;
   border-radius: 6px;
   margin-bottom: 20px;
@@ -285,6 +286,7 @@ label {
   box-sizing: border-box;
   font-size: 1rem;
   transition: border-color 0.2s;
+  background-color: var(--vt-c-white);
 }
 
 .input-text:focus {
@@ -308,7 +310,7 @@ label {
 
 .resp-item-edit {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* 讓 textarea 靠上對齊 */
   gap: 5px;
   margin-bottom: 5px;
 }
@@ -321,7 +323,7 @@ label {
 
 .delete-resp-btn {
   background: none;
-  color: var(--color-text-mute);
+  color: var(--vt-c-text-light-2);
   padding: 3px;
 }
 
@@ -331,6 +333,8 @@ label {
 
 .add-resp-group {
   display: flex;
+  /* 將 flex-direction 改為 column，讓 textarea 在上方，按鈕在下方 */
+  flex-direction: column;
   gap: 10px;
 }
 
