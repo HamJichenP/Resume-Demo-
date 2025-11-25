@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GithubIcon from '@/assets/GithubIcon.vue'
+import GithubIcon from '@/assets/icons/GithubIcon.vue'
 </script>
 
 <template>
@@ -140,7 +140,9 @@ import GithubIcon from '@/assets/GithubIcon.vue'
   flex-shrink: 0;
 
   /* 過渡動畫 */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Icon 字體大小 */

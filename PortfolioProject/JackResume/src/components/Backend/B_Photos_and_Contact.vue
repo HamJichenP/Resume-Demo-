@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import GithubIcon from '@/assets/GithubIcon.vue'
-// 引入 Material Symbols，需要確保應用程式中已正確安裝
-// import { AddIcon, DeleteIcon, EditIcon, SaveIcon } from 'material-design-icons-vue3';
+import { ref, computed } from 'vue'
+import GithubIcon from '@/assets/icons/GithubIcon.vue'
+import InstagramIcon from '@/assets/icons/InstagramIcon.vue'
 
 // 聯絡項目接口 (Interface for Contact Item)
 interface ContactItem {
@@ -15,17 +14,19 @@ interface ContactItem {
 
 // 靜態資料轉換為響應式數據
 const contacts = ref<ContactItem[]>([
-  { id: 1, icon: 'Mail', type: 'Email', value: 'john.anderson@email.com', isEditing: false },
-  { id: 2, icon: 'Call', type: 'Phone', value: '+1 (555) 123-4567', isEditing: false },
-  { id: 3, icon: 'Home_Pin', type: 'Location', value: 'San Francisco, CA', isEditing: false },
+  { id: 1, icon: 'mail', type: 'Email', value: 'john.anderson@email.com', isEditing: false },
+  { id: 2, icon: 'call', type: 'Phone', value: '+1 (555) 123-4567', isEditing: false },
+  { id: 3, icon: 'home_pin', type: 'Location', value: 'San Francisco, CA', isEditing: false },
   { id: 4, icon: 'github', type: 'GitHub', value: 'github.com/johnanderson', isEditing: false },
 ])
 
 const newContact = ref<Omit<ContactItem, 'id' | 'isEditing'>>({
-  icon: 'Add', // 新增時的預設 Icon
+  icon: 'mail', // 修正為小寫預設值
   type: '',
   value: '',
 })
+
+//#region (CRUD)
 
 // 新增 (Create)
 const addContact = () => {
@@ -58,10 +59,46 @@ const saveChanges = (contact: ContactItem) => {
   contact.isEditing = false
 }
 
-// 取得 Icon Component/Symbol
-const getIcon = (iconName: string) => {
-  return iconName === 'github' ? GithubIcon : 'span'
+//#endregion
+
+//#region (Icon)
+
+// Icon 清單：使用常用的 Material Symbols 小寫名稱
+const iconList = ref(['mail', 'call', 'home_pin', 'github', 'link', 'instagram'])
+iconList.value.sort()
+
+// === Icon 搜尋/下拉選單邏輯 ===
+const showIconDropdown = ref(false)
+const iconSearchQuery = ref('') // 用於篩選的輸入，初始為空
+
+// 計算屬性：根據輸入篩選 Icon 清單
+const filteredIcons = computed(() => {
+  const query = iconSearchQuery.value.toLowerCase()
+  if (!query) {
+    // 如果沒有輸入，只顯示前 10 個
+    return iconList.value.slice(0, 10)
+  }
+  return iconList.value.filter((icon) => icon.includes(query))
+})
+
+// 選擇 Icon
+const selectIcon = (iconName: string) => {
+  newContact.value.icon = iconName
+  iconSearchQuery.value = iconName // 讓輸入框顯示選中的名稱
+  showIconDropdown.value = false
 }
+
+// 處理 Icon Component/Symbol (保持不變)
+const getIcon = (iconName: string) => {
+  if (iconName === 'github') {
+    return GithubIcon
+  } else if (iconName === 'instagram') {
+    return InstagramIcon
+  }
+  // 如果都不是自定義組件，則返回 'span' 讓 Material Symbols 處理
+  return 'span'
+}
+//#endregion
 
 // 聯絡人姓名和標題現在也需要變成響應式數據以便編輯
 const userName = ref('Jack ChenP')
@@ -131,11 +168,42 @@ const isNameEditing = ref(false)
   <div class="add-contact-form">
     <h3>新增聯絡項目</h3>
     <div class="form-inputs">
-      <input
-        v-model="newContact.icon"
-        placeholder="Icon 名稱 (e.g., Mail, Call, github)"
-        class="input-icon"
-      />
+      <div class="icon-select-wrapper">
+        <div class="selected-icon-display" @click="showIconDropdown = !showIconDropdown">
+          <component :is="getIcon(newContact.icon)" class="icon-preview">
+            <span v-if="newContact.icon !== 'github'" class="material-symbols-outlined icon-symbol">
+              {{ newContact.icon }}
+            </span>
+          </component>
+
+          <input
+            v-model="iconSearchQuery"
+            @focus="showIconDropdown = true"
+            placeholder="搜尋 Icon 名稱"
+            class="icon-search-input"
+          />
+
+          <span class="material-symbols-outlined dropdown-arrow">
+            {{ showIconDropdown ? 'expand_less' : 'expand_more' }}
+          </span>
+        </div>
+
+        <ul v-if="showIconDropdown" class="icon-dropdown-list">
+          <li
+            v-for="iconName in filteredIcons"
+            :key="iconName"
+            @click="selectIcon(iconName)"
+            class="icon-dropdown-item"
+          >
+            <component :is="getIcon(iconName)" class="icon-preview">
+              <span v-if="iconName !== 'github'" class="material-symbols-outlined icon-symbol">
+                {{ iconName }}
+              </span>
+            </component>
+            <span class="icon-name-text">{{ iconName }}</span>
+          </li>
+        </ul>
+      </div>
       <input
         v-model="newContact.type"
         placeholder="項目名稱 (e.g., Line, Phone)"
@@ -158,16 +226,14 @@ const isNameEditing = ref(false)
 
 .admin-page-title {
   color: var(--name-color);
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 3rem;
   border-bottom: 2px solid var(--icon-box-bg);
-  padding-bottom: 1rem;
 }
 
 .divider {
   border: none;
   border-top: 1px solid var(--icon-box-bg);
-  margin: 1.5rem 0;
+  margin: 0.5rem 0;
 }
 
 /*姓名與標題編輯區*/
@@ -251,6 +317,7 @@ const isNameEditing = ref(false)
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  font-size: 20px;
 }
 
 .contact-item-admin {
@@ -322,6 +389,7 @@ const isNameEditing = ref(false)
 /*新增項目表單*/
 .add-contact-form {
   margin-top: 1rem;
+  font-size: 1rem;
 }
 
 .form-inputs {
@@ -340,4 +408,183 @@ const isNameEditing = ref(false)
   font-size: 1rem;
 }
 
+.icon-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.selected-icon-display {
+  display: flex;
+  align-items: center;
+  /* padding 設為 0.5rem 配合 input 的高度 */
+  padding: 0.5rem 0.5rem;
+  border: 1px solid var(--icon-box-bg);
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: border-color 0.2s;
+}
+.selected-icon-display:hover {
+  border-color: var(--name-color);
+}
+
+/* #region (Icon) */
+
+.icon-preview {
+  /* 沿用或簡化 edu-icon 的樣式 */
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  background-color: var(--icon-box-bg);
+  color: var(--icon-box-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+.icon-preview .icon-symbol {
+  font-size: 1.1rem;
+}
+
+.icon-search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1rem;
+  padding: 0;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  color: var(--color-text-mute);
+  font-size: 1.2rem;
+}
+
+/* Icon 下拉列表 */
+.icon-dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0 0;
+  background-color: var(--resume-card-bg);
+  border: 1px solid var(--name-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.icon-dropdown-item:hover {
+  background-color: var(--icon-box-bg);
+}
+
+.icon-name-text {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.icon-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.selected-icon-display {
+  display: flex;
+  align-items: center;
+  /* padding 設為 0.5rem 配合 input 的高度 */
+  padding: 0.5rem 0.5rem;
+  border: 1px solid var(--icon-box-bg);
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: border-color 0.2s;
+}
+.selected-icon-display:hover {
+  border-color: var(--name-color);
+}
+
+.icon-preview {
+  /* 沿用或簡化 edu-icon 的樣式 */
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  background-color: var(--icon-box-bg);
+  color: var(--icon-box-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+.icon-preview .icon-symbol {
+  font-size: 1.1rem;
+}
+
+.icon-search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1rem;
+  padding: 0;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  color: var(--color-text-mute);
+  font-size: 1.2rem;
+}
+
+/* Icon 下拉列表 */
+.icon-dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0 0;
+  background-color: var(--resume-card-bg);
+  border: 1px solid var(--name-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.icon-dropdown-item:hover {
+  background-color: var(--icon-box-bg);
+}
+
+.icon-name-text {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* #endregion */
 </style>
