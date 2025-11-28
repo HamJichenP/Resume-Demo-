@@ -1,5 +1,3 @@
-<!-- #region  首頁名字-->
-
 <script setup lang="ts">
 defineProps<{ firstname: string; lastname: string }>()
 </script>
@@ -25,4 +23,3 @@ defineProps<{ firstname: string; lastname: string }>()
   font-size: 40px;
 }
 </style>
-<!-- #endregion -->

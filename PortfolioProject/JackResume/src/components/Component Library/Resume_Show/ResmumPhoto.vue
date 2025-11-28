@@ -1,5 +1,3 @@
-<!-- #region 照片 -->
-
 <script setup lang="ts">
 defineProps<{ avatar: string }>()
 </script>
@@ -25,4 +23,3 @@ defineProps<{ avatar: string }>()
 }
 </style>
 
-<!-- #endregion -->
