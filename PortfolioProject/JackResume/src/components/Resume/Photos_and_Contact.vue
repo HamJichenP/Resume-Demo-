@@ -5,6 +5,7 @@ import GithubIcon from '@/assets/icons/GithubIcon.vue'
 <template>
   <div class="resume-block">
     <div class="contact-section">
+      
       <div class="photo-container">
         <img src="../../assets/icons/IMG_4391.jpg" alt="Professional headshot" class="profile-photo" />
       </div>
