@@ -1,13 +1,12 @@
 <script setup lang="ts">
-defineProps<{ firstname: string; lastname: string }>()
+defineProps<{ text: string }>()
 </script>
 
 <template>
-  <h1 class="first-name">{{ firstname }}</h1>
-  <h2 class="last-name">{{ lastname }}</h2>
+  <h1 class="first-name">{{ text }}</h1>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .first-name {
   /* 使用變數：名字顏色 (橘色) */
   color: var(--name-color);
@@ -22,4 +21,4 @@ defineProps<{ firstname: string; lastname: string }>()
   color: var(--title-color);
   font-size: 40px;
 }
-</style>
+</style> -->
