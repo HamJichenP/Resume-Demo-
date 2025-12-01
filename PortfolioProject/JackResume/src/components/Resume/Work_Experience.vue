@@ -12,46 +12,47 @@ interface ExperienceItem {
 
 // === 修正：直接將假資料寫在預設值函式裡面 ===
 // 這樣就不用擔心變數參照 (Hoisting) 的問題了
-withDefaults(
-  defineProps<{
-    experiences?: ExperienceItem[]
-  }>(),
-  {
-    experiences: () => [
-      {
-        id: 1,
-        date: '2018-09 - 2021-10',
-        title: 'Product Designer',
-        company: 'DesignStudio',
-        responsibilities: [
-          'Designed mobile and web applications for various clients across industries.',
-          'Collaborated with cross-functional teams to deliver high-quality products.',
-          'Conducted user research to improve UX flows.',
-        ],
-      },
-      {
-        id: 2,
-        date: '2021-10 - Ongoing',
-        title: 'Senior Product Designer',
-        company: 'TechCorp Inc.',
-        responsibilities: [
-          'Lead design initiatives for flagship SaaS platform serving 100K+ users.',
-          'Mentored junior designers and established design systems.',
-          'Optimized conversion rates by 15% through A/B testing.',
-        ],
-      },
-      
-    ],
-  },
-)
+withDefaults(defineProps<{
+  experiences?: ExperienceItem[]
+}>(), {
+  experiences: () => [
+    {
+      id: 1,
+      date: '2018-09 - 2021-10',
+      title: 'Product Designer',
+      company: 'DesignStudio',
+      responsibilities: [
+        'Designed mobile and web applications for various clients across industries.',
+        'Collaborated with cross-functional teams to deliver high-quality products.',
+        'Conducted user research to improve UX flows.'
+      ]
+    },
+    {
+      id: 2,
+      date: '2021-10 - Ongoing',
+      title: 'Senior Product Designer',
+      company: 'TechCorp Inc.',
+      responsibilities: [
+        'Lead design initiatives for flagship SaaS platform serving 100K+ users.',
+        'Mentored junior designers and established design systems.',
+        'Optimized conversion rates by 15% through A/B testing.'
+      ]
+    }
+  ]
+})
 </script>
 
 <template>
   <div class="resume-block work-experience">
+
     <RText text="Work Experience" class="work-section-title" />
 
     <div class="timeline">
-      <div v-for="item in experiences" :key="item.id" class="timeline-item">
+      <div
+        v-for="item in experiences"
+        :key="item.id"
+        class="timeline-item"
+      >
         <div class="timeline-marker">
           <div class="timeline-dot"></div>
         </div>
@@ -63,17 +64,23 @@ withDefaults(
             <p class="job-company">{{ item.company }}</p>
           </div>
           <ul class="job-responsibilities">
-            <li v-for="(resp, idx) in item.responsibilities" :key="idx" class="exp-item">
+            <li
+              v-for="(resp, idx) in item.responsibilities"
+              :key="idx"
+              class="exp-item"
+            >
               <span>{{ resp }}</span>
             </li>
           </ul>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
+
 /* 1. 區塊容器設定*/
 .work-section-title {
   /* 使用變數：標題使用較深的品牌橘色 */

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import RSkillList from '../Component Library/Resume_Show/R_List.vue'
+import RSkillList from '@/components/Component Library/Resume_Show/R_List.vue'
 
 const aboutme = ref(
   'I grew up in a family that encouraged independent thinking and a hands-on approach to problem-solving. My parents, both small business owners, instilled in me an appreciation for responsibility and fostered a practical, proactive (or "never-procrastinating") attitude towards work and life.',
@@ -63,7 +63,7 @@ const skillItems = ref([
 
   /* 關鍵：保留文字中的換行格式 */
   white-space: pre-line;
-  text-indent: 2rem;  /* 首行縮排 */
+  text-indent: 2rem; /* 首行縮排 */
 }
 
 .my-custom-list {
