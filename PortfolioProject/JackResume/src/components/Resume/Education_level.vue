@@ -1,57 +1,87 @@
+<script setup lang="ts">
+// 1. 引入 R_Text
+import RText from '../Component Library/Resume_Show/R_Text.vue'
+
+// 2. 定義資料介面
+interface EducationItem {
+  id: number
+  degree: string
+  school: string
+  year: string
+  icon: string // 這裡用來存 'school' 這類字串
+}
+
+// 3. 接收 Props 並設定預設值 (直接把假資料寫在裡面)
+withDefaults(
+  defineProps<{
+    educations?: EducationItem[]
+  }>(),
+  {
+    // 這裡要對應上面的 prop 名稱 "educations"
+    educations: () => [
+      {
+        id: 1,
+        degree: 'M.S. in Human-Computer Interaction',
+        school: 'University of Design',
+        year: '2015 - 2017',
+        icon: 'school',
+      },
+      {
+        id: 2,
+        degree: 'B.S. in Graphic Design',
+        school: 'State College',
+        year: '2011 - 2015',
+        icon: 'school',
+      },
+      
+    ],
+  },
+)
+</script>
+
 <template>
   <section class="edu-section">
-    <h2 class="edu-title">Education</h2>
+    <RText text="Education" class="edu-title" />
 
     <div class="edu-grid">
-      <div class="edu-item">
+      <div v-for="item in educations" :key="item.id" class="edu-item">
         <div class="edu-icon-wrapper">
           <div class="edu-icon">
-            <span class="material-symbols-outlined icon-symbol">school</span>
+            <span class="material-symbols-outlined icon-symbol">
+              {{ item.icon }}
+            </span>
           </div>
         </div>
-        <div>
-          <h3 class="edu-degree">M.S. in Human-Computer Interaction</h3>
-          <p class="edu-school">University of Design</p>
-          <p class="edu-year">2015 - 2017</p>
-        </div>
-      </div>
 
-      <div class="edu-item">
-        <div class="edu-icon-wrapper">
-          <div class="edu-icon">
-            <span class="material-symbols-outlined icon-symbol">school</span>
-          </div>
-        </div>
         <div>
-          <h3 class="edu-degree">B.S. in Graphic Design</h3>
-          <p class="edu-school">State College</p>
-          <p class="edu-year">2011 - 2015</p>
+          <h3 class="edu-degree">{{ item.degree }}</h3>
+          <p class="edu-school">{{ item.school }}</p>
+          <p class="edu-year">{{ item.year }}</p>
         </div>
       </div>
     </div>
+
   </section>
 </template>
 
 <style scoped>
+/* CSS 完全保持原樣，直接貼上即可 */
+
 /* 1. 區塊容器設定*/
 .edu-title {
-  /* ✨ 標題顏色使用主橘色 */
   color: var(--name-color);
-  font-size: 2rem; /* 放大標題 */
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1.5rem; /* 增加間距 */
-  /* 移除底線，讓它更像一個獨立的標題 */
-  /* padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-light); */
+  margin-bottom: 1.5rem;
+  /* 補充：抵銷 R_Text 可能帶有的 margin-top，視情況調整 */
+  margin-top: 0;
 }
 
-/* 移除 .dark .edu-title 的覆寫，使用單一變數控制 */
-
-/* 2. Grid 排版 (保持不變) */
+/* 2. Grid 排版 */
 .edu-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem; /* 增加間距 */
+  gap: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -60,73 +90,55 @@
   }
 }
 
-/* 項目佈局 (保持不變) */
+/* 項目佈局 */
 .edu-item {
   display: flex;
   gap: 1rem;
-  align-items: flex-start; /* 讓 icon 對齊頂部 */
+  align-items: flex-start;
 }
 
-/* 3. Icon 樣式 (模仿 Contact 區塊) */
+/* 3. Icon 樣式 */
 .edu-icon-wrapper {
   flex-shrink: 0;
 }
 
 .edu-icon {
-  /* ✨ 使用 Contact 區塊的樣式設定 */
-  width: 3rem; /* 方塊大小 */
+  width: 3rem;
   height: 3rem;
-  border-radius: 0.75rem; /* 圓角 */
-
-  /* ✨ 使用變數：Icon 背景色 */
+  border-radius: 0.75rem;
   background-color: var(--icon-box-bg);
-  /* ✨ 使用變數：Icon 本體顏色 (橘色) */
   color: var(--icon-box-fg);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
-/* 移除 .dark .edu-icon 的覆寫 */
-
 /* Icon size */
 .icon-symbol {
-  font-size: 1.5rem !important; /* 調整為 1.5rem */
+  font-size: 3rem !important;
 }
 
-/* 4. 文字樣式 (使用變數)*/
-/* Degree title (學位名稱) */
+/* 4. 文字樣式 */
 .edu-degree {
-  /* ✨ 放大標題，使用一般文字色 */
   font-size: 1.35rem;
   font-weight: 600;
   color: var(--color-text);
   margin-bottom: 0.25rem;
 }
 
-/* 移除 .dark .edu-degree 的覆寫 */
-
-/* School (學校名稱) */
 .edu-school {
-  /* ✨ 使用粉色作為強調色 (與工作經驗的公司名稱統一) */
   font-size: 1.15rem;
   color: var(--title-color);
   font-weight: 500;
   margin-bottom: 0.25rem;
 }
 
-/* Year text (年份) */
 .edu-year {
-  /* 使用靜音文字顏色 */
   font-size: 1rem;
   margin-top: 0;
   color: var(--color-text-mute);
 }
-
-/* 移除 .dark .edu-year 的覆寫 */
 </style>
