@@ -44,11 +44,11 @@ const getComponent = (name: string) => {
   flex-shrink: 0;
 }
 .icon-symbol {
-  font-size: 1.5rem;
+  font-size: 3rem;
 }
 .edu-icon :deep(svg) {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.5rem;
+  height: 3rem;
   fill: currentColor;
 }
 </style>

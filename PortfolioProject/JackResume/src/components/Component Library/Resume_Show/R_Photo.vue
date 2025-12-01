@@ -14,8 +14,8 @@ defineProps<{ avatar: string }>()
 }
 
 .profile-photo {
-  width: 15rem;
-  height: 15rem;
+  width: 18rem;
+  height: 18rem;
   border-radius: 50%;
   object-fit: cover;
   /* 使用變數：照片邊框 */

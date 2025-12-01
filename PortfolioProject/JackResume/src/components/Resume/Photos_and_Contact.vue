@@ -61,7 +61,7 @@ const contacts = ref([
 }
 
 .photo-wrapper {
-  margin-left: 55px; /* 控制大頭照的位置 */
+  margin-left: 60px; /* 控制大頭照的位置 */
   flex-shrink: 0;
 }
 

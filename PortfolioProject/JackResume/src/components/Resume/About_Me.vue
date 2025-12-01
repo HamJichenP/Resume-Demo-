@@ -1,87 +1,77 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import RSkillList from '../Component Library/Resume_Show/R_List.vue'
+
+const aboutme = ref(
+  'I grew up in a family that encouraged independent thinking and a hands-on approach to problem-solving. My parents, both small business owners, instilled in me an appreciation for responsibility and fostered a practical, proactive (or "never-procrastinating") attitude towards work and life.',
+)
+
+const skillItems = ref([
+  'Proficient in JavaScript, TypeScript, and Vue.js framework.',
+  'Experience with RESTful APIs and GraphQL.',
+  'Strong understanding of responsive design and cross-browser compatibility.',
+  'Familiar with version control systems like Git.',
+])
+</script>
+
 <template>
   <div class="resume-block about-me-block">
     <h2 class="section-title">About Me</h2>
-    <p class="about-paragraph">
-      I'm a passionate product designer with over 8 years of experience creating user-centered digital experiences.
-      My work focuses on bridging the gap between user needs and business goals through thoughtful design solutions.
-      I believe in the power of collaboration, accessibility, and continuous learning to create products that truly make a difference.
-    </p>
-    <ul class="bullet-list">
-      <li class="bullet-item">
-        <span>Specialized in design systems, user research, and cross-functional collaboration</span>
-      </li>
-      <li class="bullet-item">
-        <span>Strong advocate for accessibility and inclusive design practices</span>
-      </li>
-      <li class="bullet-item">
-        <span>Experienced in leading design teams and mentoring junior designers</span>
-      </li>
-    </ul>
+
+    <p class="about-paragraph">{{ aboutme }}</p>
+
+    <RSkillList class="my-custom-list" :bullets="skillItems" />
   </div>
 </template>
 
 <style scoped>
-
-/* 標題樣式 */
-.section-title {
-  /* 使用變數: 名字或 Icon 的主橘色 */
-  color: var(--name-color);
-  margin: 0;
-
-  /* margin-left: 39px; */
-  font-size: 40px;
-  font-weight: 600;
-  /* 淺色的陰影 (可選，深色模式可能需要調整) */
-  text-shadow: 1px 1px 2px rgba(251, 113, 133, 0.1);
-}
-
-/* 內文段落樣式 */
-.about-paragraph {
-  text-indent: 2em; /* 段首縮進 */
-  /* 使用變數: 一般文字顏色 */
-  color: var(--color-text);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-  font-size: 1.0625rem;
-}
-
-/* 項目列表容器 */
-.bullet-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  /* 列表文字顏色使用全站變數，由 bullet-item 繼承 */
-  color: var(--color-text);
-}
-
-/* 列表項目卡片 */
-.bullet-item {
-  display: flex;
-  gap: 1rem;
-  /* 為了呈現圖片中的淺黃色，但要保持透明度，我們使用一個更淺的背景色變數或半透明 */
-  /* 這裡假設父元件的背景是 var(--resume-card-bg) */
+/* =========================================
+   1. 卡片容器 (Outer Card)
+   這會建立一個大張的卡片，背景色跟 Header 一致
+   ========================================= */
+.resume-block {
+  /* 背景色：使用 base.css 定義的卡片背景 (淺色是米色，深色是深灰) */
   background-color: var(--resume-card-bg);
-  padding: 1rem;
-  border-radius: 0.5rem;
 
-  /* 項目邊框使用變數: 職稱的粉色 (圖中下方項目為粉色邊框) */
-  border-left: 4px solid var(--title-color);
-  /* 陰影使用變數: 淺橘色陰影 */
-  box-shadow: 0 2px 4px rgba(249, 115, 22, 0.1);
-
-  transition: transform 0.2s ease, background-color 0.2s ease, border-left-color 0.2s ease;
+  /* 內距：給予足夠的呼吸空間 */
+  padding: 1rem 1rem;
 }
 
-/* 懸停效果 */
-.bullet-item:hover {
-  transform: translateX(8px);
-  /* 懸停時，背景稍微變亮一點 */
-  background-color: rgba(255, 255, 255, 0.95);
-  /* 懸停時，左側邊框變為 Icon 的橘色 (主色) */
-  border-left-color: var(--name-color);
+/* =========================================
+   2. 標題 (About Me)
+   ========================================= */
+.section-title {
+  /* 顏色：使用品牌主色 (橘色) */
+  color: var(--name-color);
+
+  /* 字體設定 */
+  font-size: 2.25rem; /* 36px */
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-/* 刪除未使用的樣式，或調整為正確結構 */
-/* .bullet-point {}
-.bullet-item span:not(.bullet-point) {} */
+/* =========================================
+   3. 內文段落 (Paragraph)
+   ========================================= */
+.about-paragraph {
+  /* 顏色：一般文字顏色 */
+  color: var(--color-text);
+
+  /* 字體大小與行高 */
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75;
+
+  /* 關鍵：保留文字中的換行格式 */
+  white-space: pre-line;
+  text-indent: 2rem;  /* 首行縮排 */
+}
+
+.my-custom-list {
+  margin-top: 1.5rem; /* 與上方段落保持距離 */
+}
+
+.resume-block :deep(.bullet-item) {
+  /* 修改清單項目的背景色 */
+  background-color: var(--icon-box-bg);
+}
 </style>
