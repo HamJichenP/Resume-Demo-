@@ -29,14 +29,7 @@ const AvatarUpdate = (file: File | null) => {
 const { contacts, newContact, addContact, deleteContact, toggleEdit, saveChanges } = useContacts()
 
 // C. Icon 邏輯
-const { iconSearchQuery, showIconDropdown, filteredIcons, getIcon } = useIconPicker()
-
-// D. 膠水邏輯 (連接兩個 Composable)
-const selectIcon = (iconName: string) => {
-  newContact.value.icon = iconName
-  iconSearchQuery.value = iconName
-  showIconDropdown.value = false
-}
+const { iconSearchQuery, filteredIcons, getIcon } = useIconPicker()
 
 // E. 姓名編輯邏輯 (這部分比較簡單，留在這裡沒問題)
 const userName = ref('Jack ChenP')
@@ -64,8 +57,8 @@ const isNameEditing = ref(false)
       </div>
 
       <div v-else class="edit-mode">
-        <TextInput v-model="userName" label="姓名" class="input-name" />
-        <TextInput v-model="userTitle" label="標題" class="input-title" />
+        <TextInput v-model="userName" label="姓名" />
+        <TextInput v-model="userTitle" label="標題" />
 
         <ButtonPrimary variant="success" @click="isNameEditing = false">
           <span class="material-symbols-outlined icon-symbol">save</span>
@@ -242,7 +235,6 @@ const isNameEditing = ref(false)
   max-width: 350px;
 }
 
-
 /* === 3. 聯絡項目列表 (Layout) === */
 .contact-list-admin {
   display: flex;
@@ -401,5 +393,4 @@ const isNameEditing = ref(false)
   color: var(--color-text);
   flex-grow: 1;
 }
-
 </style>
