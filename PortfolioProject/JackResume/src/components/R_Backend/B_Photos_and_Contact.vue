@@ -1,106 +1,44 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import GithubIcon from '@/assets/icons/GithubIcon.vue'
-import InstagramIcon from '@/assets/icons/InstagramIcon.vue'
+import { ref } from 'vue'
 
-// 聯絡項目接口 (Interface for Contact Item)
-interface ContactItem {
-  id: number
-  icon: string // Material Symbol 名字或 'github'
-  type: string
-  value: string
-  isEditing: boolean
-}
+// 1. UI 元件引入
+import PhotoInput from '@/components/Component Library/Resume_Back/PhotoInput.vue'
+import TextInput from '@/components/Component Library/Resume_Back/TextInput.vue'
+import DropdownMenu from '@/components/Component Library/Resume_Back/DropdownMenu.vue' // 注意路徑用 @
+import ButtonPrimary from '@/components/Component Library/Resume_Back/ButtonCPN.vue'
 
-// 靜態資料轉換為響應式數據
-const contacts = ref<ContactItem[]>([
-  { id: 1, icon: 'mail', type: 'Email', value: 'john.anderson@email.com', isEditing: false },
-  { id: 2, icon: 'call', type: 'Phone', value: '+1 (555) 123-4567', isEditing: false },
-  { id: 3, icon: 'home_pin', type: 'Location', value: 'San Francisco, CA', isEditing: false },
-  { id: 4, icon: 'github', type: 'GitHub', value: 'github.com/johnanderson', isEditing: false },
-])
+// 2. 邏輯引入 (Composables)
+// 請確認你的檔案路徑和 export 名稱是否正確！
+import { useContacts } from '@/components/Component Library/Funtion/useContacts'
+import { useIconPicker } from '@/components/Component Library/Funtion/useIcon' // 假設你改好 export 名稱了
 
-const newContact = ref<Omit<ContactItem, 'id' | 'isEditing'>>({
-  icon: 'mail', // 修正為小寫預設值
-  type: '',
-  value: '',
-})
+// === 狀態與邏輯 ===
 
-//#region (CRUD)
+// A. 圖片上傳邏輯
+const userAvatar = ref('') // 這是「初始值」
 
-// 新增 (Create)
-const addContact = () => {
-  if (newContact.value.type && newContact.value.value) {
-    const newId = contacts.value.length > 0 ? Math.max(...contacts.value.map((c) => c.id)) + 1 : 1
-    contacts.value.push({
-      id: newId,
-      ...newContact.value,
-      isEditing: false,
-    })
-    // 清空輸入欄位
-    newContact.value = { icon: 'Add', type: '', value: '' }
+const AvatarUpdate = (file: File | null) => {
+  if (file) {
+    // 這裡只要負責「準備上傳」，不用去改 userAvatar.value
+    console.log('準備上傳:', file)
+    // uploadToBackend(file) ...
   }
 }
 
-// 刪除 (Delete)
-const deleteContact = (id: number) => {
-  contacts.value = contacts.value.filter((c) => c.id !== id)
-}
+// B. 聯絡人邏輯 (直接使用 useContacts，不要再手寫 ref 了！)
+const { contacts, newContact, addContact, deleteContact, toggleEdit, saveChanges } = useContacts()
 
-// 修改/更新 (Update) - 切換編輯狀態
-const toggleEdit = (contact: ContactItem) => {
-  contact.isEditing = !contact.isEditing
-}
+// C. Icon 邏輯
+const { iconSearchQuery, showIconDropdown, filteredIcons, getIcon } = useIconPicker()
 
-// 儲存修改 (Save)
-const saveChanges = (contact: ContactItem) => {
-  // 在這裡可以加入 API 呼叫，將變更儲存到後端
-  // 假設儲存成功，關閉編輯模式
-  contact.isEditing = false
-}
-
-//#endregion
-
-//#region (Icon)
-
-// Icon 清單：使用常用的 Material Symbols 小寫名稱
-const iconList = ref(['mail', 'call', 'home_pin', 'github', 'link', 'instagram'])
-iconList.value.sort()
-
-// === Icon 搜尋/下拉選單邏輯 ===
-const showIconDropdown = ref(false)
-const iconSearchQuery = ref('') // 用於篩選的輸入，初始為空
-
-// 計算屬性：根據輸入篩選 Icon 清單
-const filteredIcons = computed(() => {
-  const query = iconSearchQuery.value.toLowerCase()
-  if (!query) {
-    // 如果沒有輸入，只顯示前 10 個
-    return iconList.value.slice(0, 10)
-  }
-  return iconList.value.filter((icon) => icon.includes(query))
-})
-
-// 選擇 Icon
+// D. 膠水邏輯 (連接兩個 Composable)
 const selectIcon = (iconName: string) => {
   newContact.value.icon = iconName
-  iconSearchQuery.value = iconName // 讓輸入框顯示選中的名稱
+  iconSearchQuery.value = iconName
   showIconDropdown.value = false
 }
 
-// 處理 Icon Component/Symbol (保持不變)
-const getIcon = (iconName: string) => {
-  if (iconName === 'github') {
-    return GithubIcon
-  } else if (iconName === 'instagram') {
-    return InstagramIcon
-  }
-  // 如果都不是自定義組件，則返回 'span' 讓 Material Symbols 處理
-  return 'span'
-}
-//#endregion
-
-// 聯絡人姓名和標題現在也需要變成響應式數據以便編輯
+// E. 姓名編輯邏輯 (這部分比較簡單，留在這裡沒問題)
 const userName = ref('Jack ChenP')
 const userTitle = ref('陳柏瑋')
 const isNameEditing = ref(false)
@@ -109,20 +47,31 @@ const isNameEditing = ref(false)
 <template>
   <h2 class="admin-page-title">聯絡資訊管理</h2>
 
-  <div class="name-edit-section">
-    <div v-if="!isNameEditing" class="display-mode">
-      <h1 class="contact-name-admin">{{ userName }}</h1>
-      <p class="contact-title-admin">{{ userTitle }}</p>
-      <button @click="isNameEditing = true" class="edit-btn">
-        <span class="material-symbols-outlined icon-symbol">edit</span> 編輯姓名
-      </button>
+  <div class="top-section">
+    <div class="photo-edit-section">
+      <PhotoInput :avatar="userAvatar" @update:avatar="AvatarUpdate" />
     </div>
-    <div v-else class="edit-mode">
-      <input v-model="userName" class="input-name" placeholder="英文姓名" />
-      <input v-model="userTitle" class="input-title" placeholder="中文姓名" />
-      <button @click="isNameEditing = false" class="save-btn">
-        <span class="material-symbols-outlined icon-symbol">save</span> 儲存
-      </button>
+
+    <div class="name-edit-section">
+      <div v-if="!isNameEditing" class="display-mode">
+        <h1 class="contact-name-admin">{{ userName }}</h1>
+        <p class="contact-title-admin">{{ userTitle }}</p>
+
+        <ButtonPrimary variant="success" @click="isNameEditing = true">
+          <span class="material-symbols-outlined icon-symbol">edit</span>
+          編輯姓名
+        </ButtonPrimary>
+      </div>
+
+      <div v-else class="edit-mode">
+        <TextInput v-model="userName" label="姓名" class="input-name" />
+        <TextInput v-model="userTitle" label="標題" class="input-title" />
+
+        <ButtonPrimary variant="success" @click="isNameEditing = false">
+          <span class="material-symbols-outlined icon-symbol">save</span>
+          儲存變更
+        </ButtonPrimary>
+      </div>
     </div>
   </div>
 
@@ -130,221 +79,183 @@ const isNameEditing = ref(false)
 
   <div class="contact-list-admin">
     <h3>聯絡項目列表</h3>
+
     <div v-for="contact in contacts" :key="contact.id" class="contact-item-admin">
       <div class="item-display">
-        <component :is="getIcon(contact.icon)" class="edu-icon-admin">
+        <component :is="getIcon(contact.icon)" class="icon-box">
           <span v-if="contact.icon !== 'github'" class="material-symbols-outlined icon-symbol">{{
             contact.icon
           }}</span>
         </component>
 
         <div class="item-details">
-          <span v-if="!contact.isEditing" class="item-type">{{ contact.type }}:</span>
+          <span class="item-type">{{ contact.type }}:</span>
 
-          <input v-if="contact.isEditing" v-model="contact.value" class="input-value" />
+          <TextInput v-if="contact.isEditing" v-model="contact.value" class="input-value" />
           <span v-else class="item-value">{{ contact.value }}</span>
         </div>
       </div>
 
       <div class="item-actions">
-        <button
+        <ButtonPrimary
+          :variant="contact.isEditing ? 'success' : 'secondary'"
           @click="contact.isEditing ? saveChanges(contact) : toggleEdit(contact)"
-          :class="contact.isEditing ? 'save-btn' : 'edit-btn'"
         >
           <span class="material-symbols-outlined icon-symbol">
             {{ contact.isEditing ? 'save' : 'edit' }}
           </span>
-        </button>
+        </ButtonPrimary>
 
-        <button @click="deleteContact(contact.id)" class="delete-btn">
+        <ButtonPrimary variant="danger" @click="deleteContact(contact.id)">
           <span class="material-symbols-outlined icon-symbol">delete</span>
-        </button>
+        </ButtonPrimary>
       </div>
     </div>
   </div>
 
-  <hr class="divider" />
-
   <div class="add-contact-form">
     <h3>新增聯絡項目</h3>
     <div class="form-inputs">
-      <div class="icon-select-wrapper">
-        <div class="selected-icon-display" @click="showIconDropdown = !showIconDropdown">
-          <component :is="getIcon(newContact.icon)" class="icon-preview">
-            <span v-if="newContact.icon !== 'github'" class="material-symbols-outlined icon-symbol">
-              {{ newContact.icon }}
-            </span>
-          </component>
-
-          <input
-            v-model="iconSearchQuery"
-            @focus="showIconDropdown = true"
-            placeholder="搜尋 Icon 名稱"
-            class="icon-search-input"
-          />
-
-          <span class="material-symbols-outlined dropdown-arrow">
-            {{ showIconDropdown ? 'expand_less' : 'expand_more' }}
-          </span>
-        </div>
-
-        <ul v-if="showIconDropdown" class="icon-dropdown-list">
-          <li
-            v-for="iconName in filteredIcons"
-            :key="iconName"
-            @click="selectIcon(iconName)"
-            class="icon-dropdown-item"
-          >
-            <component :is="getIcon(iconName)" class="icon-preview">
-              <span v-if="iconName !== 'github'" class="material-symbols-outlined icon-symbol">
-                {{ iconName }}
+      <DropdownMenu v-model="newContact.icon" :options="filteredIcons" class="icon-select-wrapper">
+        <template #trigger="{ isOpen }">
+          <div class="selected-icon-display">
+            <component :is="getIcon(newContact.icon)" class="icon-box">
+              <span
+                v-if="newContact.icon !== 'github'"
+                class="material-symbols-outlined icon-symbol"
+              >
+                {{ newContact.icon }}
               </span>
             </component>
-            <span class="icon-name-text">{{ iconName }}</span>
-          </li>
-        </ul>
-      </div>
-      <input
-        v-model="newContact.type"
-        placeholder="項目名稱 (e.g., Line, Phone)"
-        class="input-type"
-      />
-      <input
-        v-model="newContact.value"
-        placeholder="項目值 (e.g., @lineid, 1234567)"
-        class="input-value"
-      />
-      <button @click="addContact" class="add-btn">
+
+            <TextInput
+              v-model="iconSearchQuery"
+              placeholder="搜尋 Icon"
+              class="icon-search-input"
+              @click.stop
+            />
+
+            <span class="material-symbols-outlined dropdown-arrow">
+              {{ isOpen ? 'expand_less' : 'expand_more' }}
+            </span>
+          </div>
+        </template>
+
+        <template #option="{ option }">
+          <div class="custom-option">
+            <component :is="getIcon(option)" class="icon-preview small">
+              <span v-if="option !== 'github'" class="material-symbols-outlined icon-symbol">
+                {{ option }}
+              </span>
+            </component>
+
+            <span class="icon-name-text">{{ option }}</span>
+          </div>
+        </template>
+      </DropdownMenu>
+
+      <TextInput v-model="newContact.type" placeholder="聯絡項目" class="input-type" />
+
+      <TextInput v-model="newContact.value" placeholder="通訊資訊" class="input-value" />
+
+      <ButtonPrimary @click="addContact">
         <span class="material-symbols-outlined icon-symbol">add_circle</span> 新增
-      </button>
+      </ButtonPrimary>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* 基礎樣式與版面 */
-
+/* === 1. 頁面基礎排版 === */
 .admin-page-title {
   color: var(--name-color);
   font-size: 3rem;
   border-bottom: 2px solid var(--icon-box-bg);
+  margin-bottom: 2rem;
 }
 
 .divider {
   border: none;
   border-top: 1px solid var(--icon-box-bg);
-  margin: 0.5rem 0;
+  margin: 2rem 0;
 }
 
-/* #region 姓名與標題編輯區 */
+/* === ✨ 2. 頂部區域 (Top Section) - 參考你的紅框截圖 === */
+.top-section {
+  display: flex; /* 開啟 Flex 讓照片跟名字並排 */
+  align-items: center; /* 垂直置中 */
+  gap: 2.5rem; /* 照片與名字之間的距離 */
 
+  margin-bottom: 2rem;
+
+  /* 如果希望寬度佔滿 */
+  width: 100%;
+}
+
+/* 左邊的照片 */
+.photo-edit-section {
+  flex-shrink: 0; /* 固定大小 */
+}
+
+/* 中間的名字區塊 */
 .name-edit-section {
+  flex-grow: 0; /* 不要撐開，只佔據需要的空間 */
+  min-width: 300px; /* 給個最小寬度，避免編輯時太窄 */
+}
+
+/* --- 名字顯示模式 --- */
+.display-mode {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .contact-name-admin {
   color: var(--name-color);
   font-size: 2.5rem;
+  font-weight: 700; /* 加粗更有份量 */
   margin: 0;
+  line-height: 1.2;
 }
 
 .contact-title-admin {
   color: var(--title-color);
   font-size: 1.5rem;
+  font-weight: 500;
   margin: 0;
+  margin-bottom: 1rem; /* 名字跟按鈕之間的距離 */
 }
 
-.edit-mode,
-.display-mode {
+/* --- 名字編輯模式 --- */
+.edit-mode {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
 }
 
-/*
- * .input-name, .input-title 的基礎樣式已移至通用輸入框區塊
- * 這裡只保留其獨有的字體大小
- */
-.input-name,
-.input-title {
-  font-size: 1.2rem;
+/* 強制讓編輯框寬度固定 */
+.edit-mode :deep(.admin-input) {
+  width: 100%;
+  max-width: 350px;
 }
 
-/* #endregion */
 
-/* #region 按鈕基礎樣式 */
-
-.edit-btn,
-.save-btn,
-.delete-btn,
-.add-btn {
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  font-size: 1rem;
-}
-
-.edit-btn .icon-symbol,
-.save-btn .icon-symbol,
-.delete-btn .icon-symbol,
-.add-btn .icon-symbol {
-  font-size: 1.25rem; /* 將 Icon 設為 1.25rem (約 20px) */
-}
-
-.edit-btn {
-  background-color: var(--icon-box-bg);
-  color: var(--name-color);
-}
-.save-btn {
-  background-color: #4caf50; /* Green */
-  color: white;
-}
-.delete-btn {
-  background-color: #f44336; /* Red */
-  color: white;
-}
-.add-btn {
-  background-color: var(--name-color);
-  color: white;
-}
-
-/* #endregion */
-
-/* #region 聯絡資訊列表管理 */
-
+/* === 3. 聯絡項目列表 (Layout) === */
 .contact-list-admin {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-size: 20px;
 }
 
 .contact-item-admin {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0rem;
-  border: none;
-  border-radius: 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--icon-box-bg);
-  transition: background-color 0.2s;
-}
-
-.contact-item-admin:last-child {
-  border-bottom: none; /* 最後一個項目沒有底線 */
-  padding-bottom: 0;
-}
-.contact-item-admin:hover {
-  background-color: var(--icon-box-bg); /* 懸停時給予輕微背景提示 */
 }
 
 .item-display {
@@ -353,19 +264,21 @@ const isNameEditing = ref(false)
   gap: 1rem;
 }
 
-.edu-icon-admin {
+.icon-box {
   width: 3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem; /* 統一圓角 */
   background-color: var(--icon-box-bg);
   color: var(--icon-box-fg);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-right: 0.5rem;
 }
-.edu-icon-admin .icon-symbol {
-  font-size: 3rem;
+
+.icon-box .icon-symbol {
+  font-size: 1.5rem;
 }
 
 .item-details {
@@ -373,17 +286,17 @@ const isNameEditing = ref(false)
   gap: 0.5rem;
   align-items: center;
 }
+
 .item-type {
   font-weight: 600;
   color: var(--name-color);
 }
+
 .item-value {
   font-size: 1.1rem;
 }
 
-/* 聯絡項目編輯區的 input-value */
 .contact-item-admin .input-value {
-  font-size: 1.1rem;
   min-width: 250px;
 }
 
@@ -391,105 +304,52 @@ const isNameEditing = ref(false)
   display: flex;
   gap: 0.5rem;
 }
-/* #endregion
 
-/* 新增項目表單 */
-
-/* #region 通用輸入框與互動樣式 (統一風格) */
+/* === 4. 新增表單區 (Grid Layout) === */
 .add-contact-form {
-  margin-top: 1rem;
-  font-size: 1rem;
+  background-color: var(--resume-card-bg);
+  border-radius: 4px;
 }
 
 .form-inputs {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr; /* 1 (Icon) 2 (Value) 1 (Type) 1 (Button) */
+  /* 比例設定 */
+  grid-template-columns: 1.2fr 1fr 2fr auto;
   gap: 1rem;
+  align-items: center; /* 垂直置中 */
+}
+
+/* === 關鍵優化：強制統一該區塊內所有元件的高度 === */
+/* 使用 :deep 穿透，確保 Input, Dropdown, Button 一樣高 */
+.form-inputs :deep(.admin-input),
+.form-inputs :deep(.select-trigger),
+.form-inputs :deep(.admin-btn) {
+  height: 3rem; /* 統一高度約 48px */
+  padding: 0 1rem; /* 統一左右內距 */
+  font-size: 1.1rem;
+  display: flex; /* 確保內容垂直置中 */
   align-items: center;
 }
 
-/*
- * .input-type 和 .input-value 的基礎樣式已移至通用輸入框區塊
- * 這裡只保留其獨有的字體大小
- */
-.input-type,
-.add-contact-form .input-value {
-  font-size: 1rem;
-}
-/* #endregion */
+/* === 5. Dropdown 插槽內容樣式 (Slot Styling) === */
 
-/* #region 涵蓋所有需要統一邊框、背景和圓角的元素*/
-
-.input-name,
-.input-title,
-.input-type,
-.add-contact-form .input-value,
-.contact-item-admin .input-value,
-.selected-icon-display {
-  /* 統一基礎樣式 */
-  background-color: var(--resume-card-bg, white);
-  border: 1px solid var(--icon-box-bg);
-  border-radius: 4px;
-  color: var(--color-text);
-  /* 統一 padding 以確保高度一致 */
-  padding: 0.5rem 0.75rem;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-/* Hover 互動：滑鼠懸停時邊框變色 */
-.input-name:hover,
-.input-title:hover,
-.input-type:hover,
-.add-contact-form .input-value:hover,
-.contact-item-admin .input-value:hover,
-.selected-icon-display:hover {
-  border-color: var(--name-color);
-}
-
-/* Focus 互動：輸入框被點擊時，邊框變色並有輕微陰影 */
-.input-name:focus,
-.input-title:focus,
-.input-type:focus,
-.add-contact-form .input-value:focus,
-.contact-item-admin .input-value:focus,
-.icon-search-input:focus {
-  border-color: var(--name-color);
-  box-shadow: 0 0 0 1px var(--name-color);
-  outline: none;
-}
-
-/* #endregion */
-
-/* #region Icon 選擇器與下拉列表 */
-
+/* A. 容器與觸發區 */
 .icon-select-wrapper {
-  position: relative;
   width: 100%;
+  height: 100%; /* 跟隨 Grid 高度 */
 }
 
 .selected-icon-display {
   display: flex;
   align-items: center;
-  cursor: pointer;
-  /* padding, border, radius 已由通用樣式區塊設定 */
+  width: 100%;
+  height: 100%; /* 撐滿 Dropdown 內部 */
 }
 
-/* Icon 搜尋輸入框 (它在 .selected-icon-display 內部，必須無邊框且透明) */
-.icon-search-input {
-  flex-grow: 1;
-  border: none; /* 移除邊框 */
-  outline: none;
-  background: transparent; /* 背景透明 */
-  padding: 0; /* 移除 padding */
-  color: var(--color-text);
-  font-size: 1rem;
-}
-
+/* B. Icon 預覽方塊 (觸發區用) */
 .icon-preview {
-  width: 2rem;
-  height: 2rem;
+  width: 2.2rem; /* 稍微縮小以塞進 3rem 高度 */
+  height: 2.2rem;
   border-radius: 4px;
   background-color: var(--icon-box-bg);
   color: var(--icon-box-fg);
@@ -499,50 +359,47 @@ const isNameEditing = ref(false)
   flex-shrink: 0;
   margin-right: 0.5rem;
 }
+
 .icon-preview .icon-symbol {
-  font-size: 1.1rem;
+  font-size: 2rem;
 }
 
+/* C. 隱形搜尋框 (讓它融入 Dropdown) */
+.icon-search-input {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  flex-grow: 1;
+  height: 100% !important; /* 確保點擊範圍夠大 */
+}
+
+/* D. 下拉箭頭 */
 .dropdown-arrow {
   margin-left: auto;
   color: var(--color-text-mute);
-  font-size: 1.2rem;
 }
 
-/* Icon 下拉列表 */
-.icon-dropdown-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-  margin: 0.25rem 0 0 0;
-  background-color: var(--resume-card-bg);
-  border: 1px solid var(--name-color);
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+/* === 6. 下拉清單內容樣式 (Option Slot) === */
 
-.icon-dropdown-item {
+/* 每一行的排版 */
+.custom-option {
   display: flex;
   align-items: center;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  width: 100%;
 }
 
-.icon-dropdown-item:hover {
-  background-color: var(--icon-box-bg);
+/* 選項裡的 Icon 方塊 (可以比上面的稍微小一點或一樣) */
+.icon-preview.small {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.8rem;
 }
 
 .icon-name-text {
-  margin-left: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  color: var(--color-text);
+  flex-grow: 1;
 }
 
-/* #endregion */
 </style>
