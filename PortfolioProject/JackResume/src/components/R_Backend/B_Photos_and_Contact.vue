@@ -232,9 +232,43 @@ const isNameEditing = ref(false)
 /* 強制讓編輯框寬度固定 */
 .edit-mode :deep(.admin-input) {
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
 }
 
+/* 針對編輯模式下的 TextInput */
+.edit-mode :deep(.admin-input) {
+  /* 1. 背景與邊框優化 */
+  background-color: var(--icon-box-bg); /* 半透明白，讓它融入米色背景 */
+  border: 1px solid transparent; /* 平常隱藏邊框 */
+  border-radius: 8px;
+
+  /* 3. 文字與空間 */
+  padding: 0.8rem 1rem; /* 加大內距 */
+  font-size: 1.1rem;
+  color: var(--color-text);
+
+  /* 過渡動畫 */
+  transition: all 0.2s ease;
+}
+
+/* 4. 滑鼠移過去 (Hover) */
+.edit-mode :deep(.admin-input:hover) {
+  background-color: var(--vt-c-white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 5. 點擊輸入時 (Focus) */
+.edit-mode :deep(.admin-input:focus) {
+  background-color: var(--vt-c-white);
+  border-color: var(--name-color); /* 聚焦時才顯示橘色邊框 */
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); /* 橘色光暈 */
+  outline: none;
+}
+
+/* 讓兩個輸入框之間有點距離 */
+.edit-mode {
+  gap: 1rem; /* 原本可能是 0.5rem，加大一點 */
+}
 /* === 3. 聯絡項目列表 (Layout) === */
 .contact-list-admin {
   display: flex;

@@ -26,13 +26,15 @@ export function useContacts() {
   // 邏輯 (Actions)
   const addContact = () => {
     if (newContact.value.type && newContact.value.value) {
+      // 產生新的ID時+1
       const newId = contacts.value.length > 0 ? Math.max(...contacts.value.map((c) => c.id)) + 1 : 1
+      // 推入陣列 (Push)
       contacts.value.push({
         id: newId,
         ...newContact.value,
         isEditing: false,
       })
-      // 重置
+      // 重置(輸入框清空)
       newContact.value = { icon: 'mail', type: '', value: '' }
     }
   }

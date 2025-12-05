@@ -91,7 +91,8 @@ onUnmounted(() => {
 <style scoped>
 /* 1. 下拉清單容器 */
 .options-list {
- 
+  position: absolute;
+  z-index: 50; /* 確保它浮在最上層，蓋過下面的東西 */
 
   margin-top: 4px;
   padding: 0; /* 移除內距 */
