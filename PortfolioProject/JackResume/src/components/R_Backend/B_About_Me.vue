@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import TextInput from '@/components/Component Library/Resume_Back/TextInput.vue'
+import ButtonCPN from '@/components/Component Library/Resume_Back/ButtonCPN.vue'
 
 // ------------------------------------
 // 假設的數據結構 (模擬從 API 獲取的原始數據)
@@ -38,15 +40,11 @@ const initialAboutMe: AboutMeData = {
   ],
 }
 
-// ------------------------------------
 // 響應式狀態 (用於編輯)
-// ------------------------------------
 const editableAbout = ref<AboutMeData>(JSON.parse(JSON.stringify(initialAboutMe))) // 深拷貝以確保數據獨立
 const newItemText = ref('')
 
-// ------------------------------------
 // 方法
-// ------------------------------------
 
 // 新增項目
 const addNewItem = () => {
@@ -87,72 +85,80 @@ const saveAllChanges = () => {
 
     <div class="paragraph-edit-section">
       <h3>About me</h3>
-      <textarea
+      <TextInput
         v-model="editableAbout.paragraph"
-        rows="5"
+        type="textarea"
+        :rows="6"
+        placeholder="輸入關於我的描述..."
         class="input-textarea"
-        placeholder="請輸入關於您的段落內容..."
-      ></textarea>
+        resize="vertical"
+        block
+      >
+      </TextInput>
     </div>
-
     <div class="divider"></div>
 
     <div class="list-management-section">
       <h3>項目列表管理</h3>
 
       <div class="add-item-form">
-        <input
+        <TextInput
           v-model="newItemText"
           placeholder="新增一個自己的特色項目 (例如：自信、勇於提問...)"
           class="input-text"
+          block
         />
-        <button @click="addNewItem" class="add-btn">
-          <span class="icon-symbol">add_circle</span>
+        <ButtonCPN @click="addNewItem" class="add-btn">
+          <span class="material-symbols-outlined icon-symbol">add_circle</span>
           新增項目
-        </button>
+        </ButtonCPN>
       </div>
 
       <ul class="bullet-list-admin">
         <li v-for="item in editableAbout.bullets" :key="item.id" class="bullet-item-admin">
           <div class="item-content-wrapper">
-            <input v-if="item.isEditing" v-model="item.text" class="input-text item-edit-input" />
+            <TextInput
+              v-if="item.isEditing"
+              v-model="item.text"
+              class="input-text item-edit-input"
+              block
+            />
             <span v-else class="item-text">{{ item.text }}</span>
           </div>
 
           <div class="item-actions">
-            <button
-              v-if="!item.isEditing"
-              @click="item.isEditing = true"
+            <ButtonCPN
+              :variant="item.isEditing ? 'success' : 'secondary'"
+              @click="item.isEditing = !item.isEditing"
               class="edit-btn"
               title="編輯"
             >
               <span class="material-symbols-outlined icon-symbol">edit</span>
-            </button>
-            <button v-else @click="item.isEditing = false" class="save-btn" title="儲存">
-              <span class="material-symbols-outlined icon-symbol">save</span>
-            </button>
-            <button @click="deleteItem(item.id)" class="delete-btn" title="刪除">
+            </ButtonCPN>
+
+            <ButtonCPN
+              variant="danger"
+              @click="deleteItem(item.id)"
+              class="delete-btn"
+              title="刪除"
+            >
               <span class="material-symbols-outlined icon-symbol">delete</span>
-            </button>
+            </ButtonCPN>
           </div>
         </li>
       </ul>
     </div>
 
     <div class="save-section">
-      <button @click="saveAllChanges" class="save-btn large-save-btn">
+      <ButtonCPN @click="saveAllChanges" class="save-btn large-save-btn">
         <span class="material-symbols-outlined icon-symbol">cloud_upload</span> 儲存所有變更
-      </button>
+      </ButtonCPN>
     </div>
-    
   </div>
 </template>
 
 <style scoped>
-
-/* ==================================== */
 /* 通用管理樣式 (基於您之前的 CSS 習慣) */
-/* ==================================== */
 
 .admin-title {
   color: var(--name-color);
@@ -186,23 +192,6 @@ const saveAllChanges = () => {
   white-space: nowrap; /* 防止按鈕文字換行 */
 }
 
-.edit-btn {
-  background-color: var(--icon-box-bg);
-  color: var(--name-color);
-}
-.save-btn {
-  background-color: #4caf50;
-  color: white;
-} /* Green */
-.delete-btn {
-  background-color: #f44336;
-  color: white;
-} /* Red */
-.add-btn {
-  background-color: var(--name-color);
-  color: white;
-}
-
 .edit-btn .icon-symbol,
 .save-btn .icon-symbol,
 .delete-btn .icon-symbol,
@@ -220,9 +209,7 @@ const saveAllChanges = () => {
   font-size: 1.1rem;
 }
 
-/* ==================================== */
 /* 輸入框通用樣式 */
-/* ==================================== */
 
 .input-textarea,
 .input-text {
@@ -236,7 +223,6 @@ const saveAllChanges = () => {
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
-  resize: vertical; /* 允許垂直拖拉大小 */
 }
 
 .input-textarea:hover,
@@ -251,10 +237,9 @@ const saveAllChanges = () => {
   outline: none;
 }
 
-/* ==================================== */
 /* 列表管理特定樣式 */
-/* ==================================== */
 
+/* 標題、列表樣式 */
 .paragraph-edit-section h3,
 .list-management-section h3 {
   font-size: 1.25rem;
@@ -290,7 +275,6 @@ const saveAllChanges = () => {
   border-radius: 0.5rem;
   background-color: var(--icon-box-bg); /* 淺米色背景 */
   border-left: 4px solid var(--title-color); /* 粉色左邊框 */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .item-content-wrapper {
