@@ -185,7 +185,6 @@ const saveAllChanges = () => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   font-weight: 500;
   transition: background-color 0.2s;
   font-size: 1rem;
@@ -223,18 +222,6 @@ const saveAllChanges = () => {
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
-}
-
-.input-textarea:hover,
-.input-text:hover {
-  border-color: var(--name-color);
-}
-
-.input-textarea:focus,
-.input-text:focus {
-  border-color: var(--name-color);
-  box-shadow: 0 0 0 1px var(--name-color);
-  outline: none;
 }
 
 /* 列表管理特定樣式 */
