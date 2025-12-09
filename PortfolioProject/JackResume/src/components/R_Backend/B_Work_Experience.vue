@@ -1,104 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useWorkExperience } from '@/components/Component Library/Funtion/useWorkExperience'
 
-// --- 1. 數據結構定義 ---
+import TextInput from '@/components/Component Library/Resume_Back/TextInput.vue'
+import ButtonCPN from '@/components/Component Library/Resume_Back/ButtonCPN.vue'
 
-interface Responsibility {
-  id: number
-  text: string
-}
-
-interface WorkExperienceItem {
-  id: number
-  startDate: string
-  endDate: string // e.g., '2021-10' or 'Ongoing'
-  jobTitle: string
-  jobCompany: string
-  responsibilities: Responsibility[]
-  // 用於控制職責列表的輸入框內容
-  newResponsibilityText: string
-}
-
-type WorkExperienceData = WorkExperienceItem[]
-
-// --- 2. 初始數據 ---
-
-const initialWorkExperience: WorkExperienceData = [
-  {
-    id: 1,
-    startDate: '2018-09',
-    endDate: '2021-10',
-    jobTitle: 'Product Designer',
-    jobCompany: 'DesignStudio',
-    responsibilities: [
-      { id: 1, text: 'Designed mobile and web applications for various clients across industries' },
-    ],
-    newResponsibilityText: '',
-  },
-  {
-    id: 2,
-    startDate: '2021-10',
-    endDate: 'Ongoing',
-    jobTitle: 'Senior Product Designer',
-    jobCompany: 'TechCorp Inc.',
-    responsibilities: [
-      { id: 1, text: 'Lead design initiatives for flagship SaaS platform serving 100K+ users' },
-    ],
-    newResponsibilityText: '',
-  },
-]
-
-// 確保數據是響應式且獨立的 (深層拷貝)
-const editableWorkExperience = ref<WorkExperienceData>(
-  JSON.parse(JSON.stringify(initialWorkExperience)),
-)
-
-// --- 3. CRUD 函式 ---
-
-// C: 新增一個新的工作經驗區塊
-const addNewJob = () => {
-  const currentIds = editableWorkExperience.value.map((j) => j.id)
-  const newId = currentIds.length > 0 ? Math.max(...currentIds) + 1 : 1
-
-  editableWorkExperience.value.push({
-    id: newId,
-    startDate: '',
-    endDate: 'Ongoing',
-    jobTitle: 'New Job Title',
-    jobCompany: 'New Company',
-    responsibilities: [],
-    newResponsibilityText: '',
-  })
-}
-
-// D: 刪除整個工作經驗區塊
-const deleteJob = (jobId: number) => {
-  // 使用 filter 篩選掉目標 ID 的項目
-  editableWorkExperience.value = editableWorkExperience.value.filter((job) => job.id !== jobId)
-}
-
-// --- 4. 職責列表的 CRUD 函式 ---
-
-// C: 新增單一職責
-const addNewResponsibility = (job: WorkExperienceItem) => {
-  if (job.newResponsibilityText.trim() === '') return
-
-  const currentIds = job.responsibilities.map((r) => r.id)
-  const newId = currentIds.length > 0 ? Math.max(...currentIds) + 1 : 1
-
-  job.responsibilities.push({
-    id: newId,
-    text: job.newResponsibilityText.trim(),
-  })
-
-  // 清空輸入框
-  job.newResponsibilityText = ''
-}
-
-// D: 刪除單一職責
-const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
-  job.responsibilities = job.responsibilities.filter((resp) => resp.id !== respId)
-}
+const { workExperiences, addJob, removeJob, addResponsibility, removeResponsibility } =
+  useWorkExperience()
 </script>
 
 <template>
@@ -106,23 +13,27 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
     <h2>💼 工作經歷編輯</h2>
 
     <div class="add-job-section">
-      <button @click="addNewJob" class="btn btn-primary">
+      <ButtonCPN @click="addJob" class="btn btn-primary">
         <span class="material-symbols-outlined icon-symbol">add_circle</span>
         新增工作經歷區塊
-      </button>
+      </ButtonCPN>
     </div>
 
     <div class="job-list">
-      <div v-for="job in editableWorkExperience" :key="job.id" class="job-card">
+      <div v-for="job in workExperiences" :key="job.id" class="job-card">
         <div class="job-card-header">
-          <button @click="deleteJob(job.id)" class="btn btn-icon delete-btn" title="刪除此工作經歷">
+          <ButtonCPN
+            @click="removeJob(job.id)"
+            class="btn btn-icon delete-btn"
+            title="刪除此工作經歷"
+          >
             <span class="material-symbols-outlined">delete</span>
-          </button>
+          </ButtonCPN>
         </div>
 
         <div class="input-group">
           <label>職位名稱</label>
-          <input
+          <TextInput
             v-model="job.jobTitle"
             class="input-text"
             placeholder="例如：Senior Product Designer"
@@ -131,13 +42,17 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
 
         <div class="input-group">
           <label>公司名稱</label>
-          <input v-model="job.jobCompany" class="input-text" placeholder="例如：TechCorp Inc." />
+          <TextInput
+            v-model="job.jobCompany"
+            class="input-text"
+            placeholder="例如：TechCorp Inc."
+          />
         </div>
 
         <div class="input-group-inline">
           <div class="input-group">
             <label>起始日期</label>
-            <input
+            <TextInput
               v-model="job.startDate"
               type="date"
               class="input-text"
@@ -146,7 +61,7 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
           </div>
           <div class="input-group">
             <label>結束日期</label>
-            <input
+            <TextInput
               v-model="job.endDate"
               type="date"
               class="input-text"
@@ -160,24 +75,44 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
 
           <ul class="resp-list">
             <li v-for="resp in job.responsibilities" :key="resp.id" class="resp-item-edit">
-              <textarea v-model="resp.text" class="input-text small-input" rows="3"></textarea>
-              <button
-                @click="deleteResponsibility(job, resp.id)"
-                class="btn btn-icon delete-resp-btn"
+              <TextInput
+                v-model="resp.text"
+                type="textarea"
+                :rows="3"
+                resize="vertical"
+              />
+
+              <ButtonCPN
+                @click="removeResponsibility(job, resp.id)"
+                variant="secondary"
+                size="small"
+                class="delete-resp-btn"
               >
-                <span class="material-symbols-outlined">close</span>
-              </button>
+                <template #icon>
+                  <span class="material-symbols-outlined">close</span>
+                </template>
+              </ButtonCPN>
             </li>
           </ul>
 
-          <div class="add-resp-group">
-            <textarea
+          <div class="resp-list">
+            <TextInput
               v-model="job.newResponsibilityText"
-              rows="5"
-              class="input-text small-input"
+              type="textarea"
+              :rows="5"
+              resize="vertical"
               placeholder="新增一個職責描述..."
-            ></textarea>
-            <button @click="addNewResponsibility(job)" class="btn btn-secondary">新增</button>
+              :block="true"
+            />
+
+            <div class="add-btn-wrapper">
+              <ButtonCPN
+                @click="addResponsibility(job)"
+                variant="secondary"
+              >
+                新增
+              </ButtonCPN>
+            </div>
           </div>
         </div>
       </div>
@@ -207,25 +142,7 @@ const deleteResponsibility = (job: WorkExperienceItem, respId: number) => {
   margin-bottom: 2rem;
 }
 
-.btn {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: background-color 0.2s;
-}
 
-.btn-primary {
-  background-color: var(--brand-orange);
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #e06d0a; /* A slightly darker orange */
-}
 
 /* 工作卡片樣式 */
 .job-card {
@@ -278,7 +195,7 @@ label {
   font-size: 0.9rem;
 }
 
-.input-text {
+ .input-text {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--color-border);
@@ -286,7 +203,7 @@ label {
   box-sizing: border-box;
   font-size: 1rem;
   transition: border-color 0.2s;
-  background-color: var(--vt-c-white);
+
 }
 
 .input-text:focus {

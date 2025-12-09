@@ -62,7 +62,7 @@ const handleInput = (event: Event) => {
 /* 共用樣式 */
 .admin-input {
   background-color: var(--resume-card-bg, white);
-  border: 1px solid var(--icon-box-bg);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   color: var(--color-text);
   padding: 0.5rem 0.75rem;

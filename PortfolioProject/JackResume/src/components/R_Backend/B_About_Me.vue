@@ -1,82 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import TextInput from '@/components/Component Library/Resume_Back/TextInput.vue'
 import ButtonCPN from '@/components/Component Library/Resume_Back/ButtonCPN.vue'
 
-// ------------------------------------
-// 假設的數據結構 (模擬從 API 獲取的原始數據)
-// ------------------------------------
-interface BulletItem {
-  id: number
-  text: string
-  isEditing: boolean
-}
+import { useAboutMe } from '../Component Library/Funtion/useAboutme'
 
-interface AboutMeData {
-  paragraph: string
-  bullets: BulletItem[]
-}
-
-// 模擬的初始數據 (從您圖片中提取)
-const initialAboutMe: AboutMeData = {
-  paragraph:
-    "I'm a passionate product designer with over 8 years of experience creating user-centered digital experiences. My work focuses on bridging the gap between user needs and business goals through thoughtful design solutions. I believe in the power of collaboration, accessibility, and continuous learning to create products that truly make a difference.",
-  bullets: [
-    {
-      id: 1,
-      text: 'Specialized in design systems, user research, and cross-functional collaboration',
-      isEditing: false,
-    },
-    {
-      id: 2,
-      text: 'Strong advocate for accessibility and inclusive design practices',
-      isEditing: false,
-    },
-    {
-      id: 3,
-      text: 'Experienced in leading design teams and mentoring junior designers',
-      isEditing: false,
-    },
-  ],
-}
-
-// 響應式狀態 (用於編輯)
-const editableAbout = ref<AboutMeData>(JSON.parse(JSON.stringify(initialAboutMe))) // 深拷貝以確保數據獨立
-const newItemText = ref('')
-
-// 方法
-
-// 新增項目
-const addNewItem = () => {
-  if (newItemText.value.trim() === '') return
-
-  // ID 生成邏輯 （三元運算式 [條件判斷] ? [條件為真時的值] : [條件為假時的值]）
-  const newId =
-    editableAbout.value.bullets.length > 0 //是否大於0
-      ? Math.max(...editableAbout.value.bullets.map((b) => b.id)) + 1 //找到最大ID並+1
-      : 1
-
-  editableAbout.value.bullets.push({
-    id: newId,
-    text: newItemText.value.trim(),
-    isEditing: false,
-  })
-
-  newItemText.value = '' // 清空輸入框
-}
-
-// 刪除項目
-const deleteItem = (id: number) => {
-  editableAbout.value.bullets = editableAbout.value.bullets.filter((item) => item.id !== id)
-}
-
-// 儲存所有變更 (模擬 API 提交)
-const saveAllChanges = () => {
-  console.log('正在儲存 About Me 的變更...', editableAbout.value)
-  // 這裡應放置實際的 API 呼叫邏輯
-  alert('變更已儲存 (模擬)')
-  // 儲存後，可以將 editableAbout 重新設為新的 initialAboutMe (實際應用中應從 API 重新獲取或同步)
-}
+const {
+  aboutData, // 原本叫 editableAbout，這裡改名叫 aboutData 比較直觀
+  newItemText,
+  addNewItem,
+  deleteItem,
+  saveAllChanges,
+} = useAboutMe()
 </script>
 
 <template>
@@ -86,7 +20,7 @@ const saveAllChanges = () => {
     <div class="paragraph-edit-section">
       <h3>About me</h3>
       <TextInput
-        v-model="editableAbout.paragraph"
+        v-model="aboutData.paragraph"
         type="textarea"
         :rows="6"
         placeholder="輸入關於我的描述..."
@@ -115,7 +49,7 @@ const saveAllChanges = () => {
       </div>
 
       <ul class="bullet-list-admin">
-        <li v-for="item in editableAbout.bullets" :key="item.id" class="bullet-item-admin">
+        <li v-for="item in aboutData.bullets" :key="item.id" class="bullet-item-admin">
           <div class="item-content-wrapper">
             <TextInput
               v-if="item.isEditing"
