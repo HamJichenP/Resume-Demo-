@@ -147,7 +147,7 @@ const isNameEditing = ref(false)
         </template>
       </DropdownMenu>
 
-      <TextInput v-model="newContact.type" placeholder="聯絡項目" class="input-type" />
+      <TextInput v-model="newContact.type" placeholder="聯絡項目" class="input-value" />
 
       <TextInput v-model="newContact.value" placeholder="通訊資訊" class="input-value" />
 
@@ -333,7 +333,6 @@ const isNameEditing = ref(false)
 
 /* === 4. 新增表單區 (Grid Layout) === */
 .add-contact-form {
-  background-color: var(--resume-card-bg);
   border-radius: 4px;
 }
 
@@ -377,8 +376,6 @@ const isNameEditing = ref(false)
   width: 2.2rem; /* 稍微縮小以塞進 3rem 高度 */
   height: 2.2rem;
   border-radius: 4px;
-  background-color: var(--icon-box-bg);
-  color: var(--icon-box-fg);
   display: flex;
   align-items: center;
   justify-content: center;

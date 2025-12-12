@@ -150,8 +150,6 @@ const {
   padding: 0.75rem 1rem;
   border: 1px solid var(--icon-box-bg);
   border-radius: 4px;
-  background-color: var(--resume-card-bg, white);
-  color: var(--color-text);
   font-size: 1rem;
   transition:
     border-color 0.2s,

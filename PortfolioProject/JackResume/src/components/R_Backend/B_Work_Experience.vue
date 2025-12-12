@@ -75,12 +75,7 @@ const { workExperiences, addJob, removeJob, addResponsibility, removeResponsibil
 
           <ul class="resp-list">
             <li v-for="resp in job.responsibilities" :key="resp.id" class="resp-item-edit">
-              <TextInput
-                v-model="resp.text"
-                type="textarea"
-                :rows="3"
-                resize="vertical"
-              />
+              <TextInput v-model="resp.text" type="textarea" :rows="3" resize="vertical" style="flex: 1;"/>
 
               <ButtonCPN
                 @click="removeResponsibility(job, resp.id)"
@@ -106,12 +101,7 @@ const { workExperiences, addJob, removeJob, addResponsibility, removeResponsibil
             />
 
             <div class="add-btn-wrapper">
-              <ButtonCPN
-                @click="addResponsibility(job)"
-                variant="secondary"
-              >
-                新增
-              </ButtonCPN>
+              <ButtonCPN @click="addResponsibility(job)" variant="secondary"> 新增 </ButtonCPN>
             </div>
           </div>
         </div>
@@ -141,8 +131,6 @@ const { workExperiences, addJob, removeJob, addResponsibility, removeResponsibil
   text-align: center;
   margin-bottom: 2rem;
 }
-
-
 
 /* 工作卡片樣式 */
 .job-card {
@@ -195,7 +183,7 @@ label {
   font-size: 0.9rem;
 }
 
- .input-text {
+.input-text {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--color-border);
@@ -203,11 +191,9 @@ label {
   box-sizing: border-box;
   font-size: 1rem;
   transition: border-color 0.2s;
-
 }
 
 .input-text:focus {
-  border-color: var(--brand-orange);
   outline: none;
 }
 
@@ -228,8 +214,6 @@ label {
 .resp-item-edit {
   display: flex;
   align-items: flex-start; /* 讓 textarea 靠上對齊 */
-  gap: 5px;
-  margin-bottom: 5px;
 }
 
 .small-input {
@@ -248,18 +232,4 @@ label {
   color: var(--brand-pink);
 }
 
-.add-resp-group {
-  display: flex;
-  /* 將 flex-direction 改為 column，讓 textarea 在上方，按鈕在下方 */
-  flex-direction: column;
-  gap: 10px;
-}
-
-.btn-secondary {
-  background-color: var(--icon-box-bg);
-  color: var(--brand-orange);
-}
-.btn-secondary:hover {
-  background-color: var(--vt-c-white-mute);
-}
 </style>
